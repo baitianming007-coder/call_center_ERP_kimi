@@ -1,0 +1,31 @@
+{
+  "version": "2.0",
+  "envId": "{{env.ENV_ID}}",
+  "$schema": "https://framework-1258016615.tcloudbaseapp.com/schema/latest.json",
+  "framework": {
+    "name": "call-center-erp",
+    "plugins": {
+      "container": {
+        "use": "@cloudbase/framework-plugin-container",
+        "inputs": {
+          "serviceName": "call-center-erp",
+          "servicePath": "/",
+          "localPath": ".",
+          "dockerfilePath": "./Dockerfile",
+          "buildDir": "",
+          "containerPort": 8080,
+          "minNum": 1,
+          "maxNum": 5,
+          "cpu": 1,
+          "mem": 2,
+          "policyType": "cpu",
+          "policyThreshold": 80,
+          "envVariables": {},
+          "customLogs": "stdout",
+          "initialDelaySeconds": 3
+        }
+      }
+    }
+  }
+}
+
