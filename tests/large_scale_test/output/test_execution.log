@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/kimi/Desktop/call center 2.0/tests/large_scale_test/run_full_test.py", line 12, in <module>
+    from tests.large_scale_test import data_generator, import_data, trigger_checks, supervisor_simulation, business_validator, generate_report
+  File "/Users/kimi/Desktop/call center 2.0/tests/large_scale_test/trigger_checks.py", line 15, in <module>
+    from core.promotion_engine import check_all_pending_promotions
+ImportError: cannot import name 'check_all_pending_promotions' from 'core.promotion_engine' (/Users/kimi/Desktop/call center 2.0/core/promotion_engine.py)

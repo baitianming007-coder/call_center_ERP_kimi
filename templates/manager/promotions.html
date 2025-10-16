@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}晋级审批管理 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📈 晋级审批管理</h1>
+    <p style="color: var(--gray-600); margin-top: var(--space-8);">审批员工晋级申请</p>
+</div>
+
+<!-- 待审批 -->
+<div class="card" style="margin-bottom: var(--space-24);">
+    <div class="card-header">
+        <h2>待审批晋级申请</h2>
+        <span class="badge badge-warning">{{ pending_promotions|length }}条</span>
+    </div>
+    <div class="card-body">
+        {% if pending_promotions %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>工号</th>
+                    <th>姓名</th>
+                    <th>团队</th>
+                    <th>晋级路径</th>
+                    <th>触发日期</th>
+                    <th>触发原因</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for promotion in pending_promotions %}
+                <tr>
+                    <td>{{ promotion.employee_no }}</td>
+                    <td>{{ promotion.employee_name }}</td>
+                    <td><span class="badge badge-info">{{ promotion.team }}</span></td>
+                    <td>
+                        <span class="badge" style="background: var(--gray-400);">{{ promotion.from_status }}</span>
+                        →
+                        <span class="badge badge-success">{{ promotion.to_status }}</span>
+                    </td>
+                    <td>{{ promotion.trigger_date }}</td>
+                    <td style="max-width: 300px;">{{ promotion.trigger_reason }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('manager.approve_promotion_action', promotion_id=promotion.id) }}" style="display: inline;">
+                            <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('确认批准晋级吗？')">
+                                ✓ 批准
+                            </button>
+                        </form>
+                        <button class="btn btn-sm btn-danger" onclick="openRejectModal({{ promotion.id }}, '{{ promotion.employee_name }}', '{{ promotion.from_status }}→{{ promotion.to_status }}')">
+                            ✗ 驳回
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <p>✓ 暂无待审批晋级申请</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 历史记录 -->
+<div class="card">
+    <div class="card-header">
+        <h2>审批历史</h2>
+    </div>
+    <div class="card-body">
+        {% if history_promotions %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>工号</th>
+                    <th>姓名</th>
+                    <th>晋级路径</th>
+                    <th>状态</th>
+                    <th>审批人</th>
+                    <th>审批时间</th>
+                    <th>生效日期</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for promotion in history_promotions %}
+                <tr>
+                    <td>{{ promotion.employee_no }}</td>
+                    <td>{{ promotion.employee_name }}</td>
+                    <td>{{ promotion.from_status }} → {{ promotion.to_status }}</td>
+                    <td>
+                        {% if promotion.status == 'approved' %}
+                        <span class="badge badge-success">已批准</span>
+                        {% elif promotion.status == 'rejected' %}
+                        <span class="badge badge-danger">已驳回</span>
+                        {% elif promotion.status == 'overridden' %}
+                        <span class="badge badge-warning">已否决</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ promotion.approver_name or '-' }}</td>
+                    <td>{{ promotion.approved_at or '-' }}</td>
+                    <td>{{ promotion.effective_date or '-' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <p>暂无审批历史</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 驳回原因弹窗 -->
+<div id="rejectModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>驳回晋级申请</h3>
+            <button class="modal-close" onclick="closeRejectModal()">&times;</button>
+        </div>
+        <form method="POST" id="rejectForm">
+            <div class="modal-body">
+                <p id="rejectInfo" style="color: var(--gray-700); margin-bottom: var(--space-16);"></p>
+                
+                <div class="form-group">
+                    <label class="form-label">驳回原因 <span style="color: var(--color-danger);">*</span></label>
+                    <textarea name="reason" class="form-input" rows="4" required placeholder="请详细说明驳回原因..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeRejectModal()">取消</button>
+                <button type="submit" class="btn btn-danger">确认驳回</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openRejectModal(promotionId, employeeName, promotionPath) {
+    document.getElementById('rejectInfo').textContent = `员工：${employeeName} | 晋级：${promotionPath}`;
+    document.getElementById('rejectForm').action = `/manager/promotions/${promotionId}/reject`;
+    document.getElementById('rejectModal').style.display = 'flex';
+}
+
+function closeRejectModal() {
+    document.getElementById('rejectModal').style.display = 'none';
+}
+
+document.getElementById('rejectModal').addEventListener('click', function(e) {
+    if (e.target === this) closeRejectModal();
+});
+</script>
+{% endblock %}
+
+
+

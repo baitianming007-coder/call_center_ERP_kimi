@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}员工业绩排行榜 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div class="mb-24">
+    <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900); margin-bottom: var(--space-8);">
+        🏆 员工业绩排行榜
+    </h1>
+    <p style="color: var(--gray-600);">{{ year_month }} · TOP 50 员工</p>
+</div>
+
+<!-- 排序切换 -->
+<div class="card mb-24">
+    <div class="card-body">
+        <div style="display: flex; gap: var(--space-12);">
+            <a href="?year_month={{ year_month }}&type=orders" class="btn {% if rank_type == 'orders' %}btn-primary{% else %}btn-secondary{% endif %}">
+                按出单数
+            </a>
+            <a href="?year_month={{ year_month }}&type=commission" class="btn {% if rank_type == 'commission' %}btn-primary{% else %}btn-secondary{% endif %}">
+                按提成
+            </a>
+            <a href="?year_month={{ year_month }}&type=valid_days" class="btn {% if rank_type == 'valid_days' %}btn-primary{% else %}btn-secondary{% endif %}">
+                按出勤天数
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- 排行榜 -->
+<div class="card">
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>排名</th>
+                    <th>工号</th>
+                    <th>姓名</th>
+                    <th>团队</th>
+                    <th>状态</th>
+                    <th>工作天数</th>
+                    <th>有效工作日</th>
+                    <th>总出单</th>
+                    <th>平均出单</th>
+                    <th style="text-align: right;">总提成</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emp in rankings %}
+                <tr {% if emp.rank <= 3 %}style="background: rgba(16, 185, 129, 0.05);"{% endif %}>
+                    <td>
+                        {% if emp.rank == 1 %}
+                            <span style="font-size: 24px;">🥇</span>
+                        {% elif emp.rank == 2 %}
+                            <span style="font-size: 24px;">🥈</span>
+                        {% elif emp.rank == 3 %}
+                            <span style="font-size: 24px;">🥉</span>
+                        {% else %}
+                            <strong>{{ emp.rank }}</strong>
+                        {% endif %}
+                    </td>
+                    <td>{{ emp.employee_no }}</td>
+                    <td><strong>{{ emp.name }}</strong></td>
+                    <td>{{ emp.team }}</td>
+                    <td><span class="badge badge-{{ emp.status }}">{{ emp.status | status_label }}</span></td>
+                    <td>{{ emp.work_days }}</td>
+                    <td>{{ emp.valid_days }}</td>
+                    <td><strong style="color: var(--color-primary); font-size: 16px;">{{ emp.total_orders or 0 }}</strong></td>
+                    <td>{{ emp.avg_orders }}</td>
+                    <td style="text-align: right; font-weight: 700; color: var(--color-success);">
+                        {{ (emp.total_commission or 0) | format_currency }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+
+

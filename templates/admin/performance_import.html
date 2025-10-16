@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}Excel导入业绩 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- 面包屑导航 -->
+    {% if breadcrumbs %}
+    <nav class="breadcrumb" aria-label="breadcrumb">
+        <ol class="breadcrumb-list">
+            <li class="breadcrumb-item">
+                <a href="{{ url_for('admin.dashboard') }}">🏠 首页</a>
+            </li>
+            {% for item in breadcrumbs %}
+            <li class="breadcrumb-item{% if loop.last %} active{% endif %}">
+                {% if item.url and not loop.last %}
+                <a href="{{ item.url }}">{{ item.name }}</a>
+                {% else %}
+                {{ item.name }}
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ol>
+    </nav>
+    {% endif %}
+    
+    <div class="card">
+        <div class="card-header">
+            <h2>📥 Excel导入业绩数据</h2>
+        </div>
+        <div class="card-body">
+            <!-- 使用说明 -->
+            <div class="alert alert-info" style="margin-bottom: var(--space-24);">
+                <h4 style="margin-bottom: var(--space-12);">📋 导入说明</h4>
+                <ol style="margin-bottom: 0; padding-left: var(--space-20);">
+                    <li><strong>第一步</strong>: 点击下方"下载模板"按钮，获取Excel导入模板</li>
+                    <li><strong>第二步</strong>: 按照模板格式填写业绩数据（工号、日期、出单数）</li>
+                    <li><strong>第三步</strong>: 选择填写好的Excel文件，点击"开始导入"</li>
+                    <li><strong>注意事项</strong>:
+                        <ul>
+                            <li>工号必须存在且为在职员工</li>
+                            <li>日期格式：YYYY-MM-DD（如2025-01-15）</li>
+                            <li>出单数必须为0-100的整数</li>
+                            <li>如果某日期已有业绩记录，将自动更新</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            
+            <!-- 下载模板 -->
+            <div style="margin-bottom: var(--space-32); text-align: center; padding: var(--space-24); background: var(--gray-50); border-radius: var(--radius-md);">
+                <h3 style="margin-bottom: var(--space-16);">💾 下载导入模板</h3>
+                <a href="{{ url_for('admin.performance_download_template') }}" class="btn btn-success btn-lg">
+                    ⬇️ 下载Excel模板
+                </a>
+                <p style="margin-top: var(--space-12); color: var(--gray-600); font-size: 14px;">
+                    模板包含示例数据和详细说明
+                </p>
+            </div>
+            
+            <!-- 导入表单 -->
+            <form method="POST" enctype="multipart/form-data" id="importForm">
+                <div class="form-group">
+                    <label class="form-label required">选择Excel文件</label>
+                    <input type="file" 
+                           name="file" 
+                           id="fileInput"
+                           accept=".xlsx,.xls"
+                           class="form-control"
+                           required
+                           onchange="handleFileSelect(this)">
+                    <div class="form-help">支持格式：.xlsx, .xls</div>
+                </div>
+                
+                <!-- 文件预览信息 -->
+                <div id="filePreview" style="display: none; margin-top: var(--space-16); padding: var(--space-16); background: var(--gray-50); border-radius: var(--radius-sm);">
+                    <h4 style="margin-bottom: var(--space-8);">已选择文件</h4>
+                    <p id="fileName" style="margin: 0; color: var(--gray-700);"></p>
+                    <p id="fileSize" style="margin: 4px 0 0 0; color: var(--gray-600); font-size: 14px;"></p>
+                </div>
+                
+                <div style="margin-top: var(--space-24); display: flex; gap: var(--space-12);">
+                    <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
+                        📤 开始导入
+                    </button>
+                    <a href="{{ url_for('admin.performance') }}" class="btn btn-secondary">
+                        ← 返回业绩管理
+                    </a>
+                </div>
+            </form>
+            
+            <!-- 导入进度提示 -->
+            <div id="importProgress" style="display: none; margin-top: var(--space-24);">
+                <div style="text-align: center; padding: var(--space-32);">
+                    <div class="loading-spinner"></div>
+                    <p style="margin-top: var(--space-16); color: var(--gray-600);">正在导入数据，请稍候...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 导入提示卡片 -->
+    <div class="card" style="margin-top: var(--space-24);">
+        <div class="card-header">
+            <h3>💡 温馨提示</h3>
+        </div>
+        <div class="card-body">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-16);">
+                <div>
+                    <h4 style="color: var(--color-success); margin-bottom: var(--space-8);">✅ 数据验证</h4>
+                    <p style="color: var(--gray-600); font-size: 14px; line-height: 1.6;">
+                        系统会自动验证每一行数据的合法性，包括工号是否存在、日期格式是否正确、出单数是否合理等。
+                    </p>
+                </div>
+                <div>
+                    <h4 style="color: var(--color-info); margin-bottom: var(--space-8);">🔄 自动更新</h4>
+                    <p style="color: var(--gray-600); font-size: 14px; line-height: 1.6;">
+                        如果某员工某日期已有业绩记录，系统会自动更新该记录，无需手动删除旧数据。
+                    </p>
+                </div>
+                <div>
+                    <h4 style="color: var(--color-warning); margin-bottom: var(--space-8);">⚡ 自动计算</h4>
+                    <p style="color: var(--gray-600); font-size: 14px; line-height: 1.6;">
+                        导入时系统会根据员工等级和出单数自动计算提成，无需手动填写提成金额。
+                    </p>
+                </div>
+                <div>
+                    <h4 style="color: var(--color-danger); margin-bottom: var(--space-8);">📝 详细反馈</h4>
+                    <p style="color: var(--gray-600); font-size: 14px; line-height: 1.6;">
+                        导入完成后会显示详细的导入结果，包括成功条数、失败条数以及具体的错误信息。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.btn-lg {
+    padding: var(--space-16) var(--space-32);
+    font-size: 16px;
+}
+</style>
+
+<script>
+function handleFileSelect(input) {
+    const file = input.files[0];
+    const submitBtn = document.getElementById('submitBtn');
+    const filePreview = document.getElementById('filePreview');
+    const fileName = document.getElementById('fileName');
+    const fileSize = document.getElementById('fileSize');
+    
+    if (file) {
+        // 验证文件类型
+        const validTypes = ['.xlsx', '.xls'];
+        const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+        
+        if (!validTypes.includes(fileExtension)) {
+            showToast('请选择Excel文件（.xlsx或.xls）', 'danger');
+            input.value = '';
+            submitBtn.disabled = true;
+            filePreview.style.display = 'none';
+            return;
+        }
+        
+        // 验证文件大小（最大10MB）
+        if (file.size > 10 * 1024 * 1024) {
+            showToast('文件大小不能超过10MB', 'danger');
+            input.value = '';
+            submitBtn.disabled = true;
+            filePreview.style.display = 'none';
+            return;
+        }
+        
+        // 显示文件信息
+        fileName.textContent = `📄 ${file.name}`;
+        fileSize.textContent = `大小: ${(file.size / 1024).toFixed(2)} KB`;
+        filePreview.style.display = 'block';
+        submitBtn.disabled = false;
+    } else {
+        submitBtn.disabled = true;
+        filePreview.style.display = 'none';
+    }
+}
+
+// 表单提交处理
+document.getElementById('importForm').addEventListener('submit', function(e) {
+    const fileInput = document.getElementById('fileInput');
+    
+    if (!fileInput.files[0]) {
+        e.preventDefault();
+        showToast('请选择要导入的文件', 'warning');
+        return;
+    }
+    
+    // 显示进度提示
+    document.getElementById('importProgress').style.display = 'block';
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('submitBtn').innerHTML = '<span class="loading-inline"></span> 导入中...';
+});
+</script>
+{% endblock %}
+
+

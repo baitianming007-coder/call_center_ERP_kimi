@@ -1,0 +1,482 @@
+[
+  {
+    "employee_no": "BWINDOW001",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW001",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW002",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW002",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW003",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW003",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW004",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW004",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW005",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW005",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW006",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW006",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW007",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW007",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW008",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW008",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW009",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW009",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW010",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW010",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW011",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW011",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW012",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW012",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW013",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW013",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW014",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW014",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW015",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW015",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW016",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW016",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW017",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW017",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW018",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW018",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW019",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW019",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW020",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW020",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW021",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW021",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW022",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW022",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW023",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW023",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW024",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW024",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW025",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW025",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW026",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW026",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW027",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW027",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW028",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW028",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW029",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW029",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  },
+  {
+    "employee_no": "BWINDOW030",
+    "from_status": "trainee",
+    "to_status": "C",
+    "change_date": "2025-10-05",
+    "reason": "培训期满3天，自动转C级",
+    "days_in_status": 3
+  },
+  {
+    "employee_no": "BWINDOW030",
+    "from_status": "C",
+    "to_status": "B",
+    "change_date": "2025-10-09",
+    "reason": "C级7天，最近3天出单≥3，晋升B级",
+    "days_in_status": 7
+  }
+]

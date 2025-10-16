@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}团队管理 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div class="flex-between mb-24">
+    <div>
+        <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900); margin-bottom: var(--space-8);">
+            🏢 团队管理
+        </h1>
+        <p style="color: var(--gray-600);">共 {{ team_stats|length }} 个团队</p>
+    </div>
+    <button class="btn btn-primary" onclick="showAddTeam()">+ 添加团队</button>
+</div>
+
+<!-- 团队列表 -->
+<div class="grid grid-cols-3" style="gap: var(--space-24);">
+    {% for item in team_stats %}
+    <div class="card">
+        <div class="card-body">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-16);">
+                <div>
+                    <h3 style="font-size: 20px; font-weight: 700; color: var(--gray-900); margin-bottom: var(--space-8);">
+                        {{ item.team.team_name }}
+                    </h3>
+                    <p style="font-size: 13px; color: var(--gray-600);">
+                        负责人：{{ item.team.team_leader or '未设置' }}
+                    </p>
+                </div>
+                <span class="badge {% if item.team.is_active %}badge-success{% else %}badge{% endif %}" style="background: var(--gray-100); color: var(--gray-600);">
+                    {{ '活跃' if item.team.is_active else '禁用' }}
+                </span>
+            </div>
+            
+            <div style="padding: var(--space-16); background: var(--gray-50); border-radius: var(--radius-sm); margin-bottom: var(--space-16);">
+                <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 4px;">在职人数</div>
+                <div style="font-size: 28px; font-weight: 700; color: var(--color-primary);">{{ item.employee_count }}</div>
+            </div>
+            
+            <p style="font-size: 13px; color: var(--gray-700); margin-bottom: var(--space-16); min-height: 40px;">
+                {{ item.team.description or '暂无描述' }}
+            </p>
+            
+            <div style="display: flex; gap: var(--space-8);">
+                <button class="btn btn-sm btn-danger" onclick="deleteTeam({{ item.team.id }}, '{{ item.team.team_name }}', {{ item.employee_count }})" style="flex: 1;">
+                    删除
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- 添加团队弹窗 -->
+<div id="addTeamModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: white; border-radius: var(--radius-md); max-width: 500px; width: 90%;">
+        <div style="padding: var(--space-24); border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 18px; font-weight: 600; margin: 0;">添加团队</h3>
+            <button onclick="closeAddTeam()" style="border: none; background: none; font-size: 24px; cursor: pointer; color: var(--gray-600);">&times;</button>
+        </div>
+        <div style="padding: var(--space-24);">
+            <form id="teamForm" onsubmit="addTeam(event)">
+                <div class="form-group">
+                    <label class="form-label required">团队名称</label>
+                    <input type="text" id="team_name" class="form-input" placeholder="例如：A组" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">团队负责人</label>
+                    <input type="text" id="team_leader" class="form-input" placeholder="负责人姓名">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">描述</label>
+                    <textarea id="description" class="form-textarea" rows="3" placeholder="团队描述（可选）"></textarea>
+                </div>
+                
+                <div style="display: flex; gap: var(--space-12); justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddTeam()">取消</button>
+                    <button type="submit" class="btn btn-primary">添加</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function showAddTeam() {
+        document.getElementById('addTeamModal').style.display = 'flex';
+        document.getElementById('teamForm').reset();
+    }
+    
+    function closeAddTeam() {
+        document.getElementById('addTeamModal').style.display = 'none';
+    }
+    
+    function addTeam(event) {
+        event.preventDefault();
+        
+        const formData = new FormData();
+        formData.append('team_name', document.getElementById('team_name').value);
+        formData.append('team_leader', document.getElementById('team_leader').value);
+        formData.append('description', document.getElementById('description').value);
+        
+        fetch('{{ url_for("admin.team_add") }}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(data.message, 'danger');
+            }
+        })
+        .catch(error => {
+            showToast('添加失败：' + error, 'danger');
+        });
+    }
+    
+    function deleteTeam(id, name, employeeCount) {
+        if (employeeCount > 0) {
+            showToast(`团队"${name}"还有${employeeCount}名在职员工，无法删除`, 'warning');
+            return;
+        }
+        
+        if (!confirmAction(`确定要删除团队"${name}"吗？`)) {
+            return;
+        }
+        
+        fetch(`/admin/team/${id}/delete`, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(data.message, 'danger');
+            }
+        })
+        .catch(error => {
+            showToast('删除失败：' + error, 'danger');
+        });
+    }
+    
+    document.getElementById('addTeamModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeAddTeam();
+        }
+    });
+</script>
+{% endblock %}
+
+
+

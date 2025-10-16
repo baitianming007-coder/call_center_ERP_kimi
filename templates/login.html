@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 呼叫中心职场管理系统</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            padding: var(--space-24);
+        }
+        
+        .login-card {
+            background: white;
+            border-radius: var(--radius-md);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: var(--space-48) var(--space-40);
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: var(--space-32);
+        }
+        
+        .login-icon {
+            font-size: 48px;
+            margin-bottom: var(--space-16);
+        }
+        
+        .login-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--space-8);
+        }
+        
+        .login-subtitle {
+            font-size: 14px;
+            color: var(--gray-600);
+        }
+        
+        .login-form .form-group {
+            margin-bottom: var(--space-20);
+        }
+        
+        .login-form .form-input {
+            height: 44px;
+            font-size: 15px;
+        }
+        
+        .login-form .btn {
+            width: 100%;
+            height: 44px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .login-footer {
+            margin-top: var(--space-32);
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-600);
+        }
+        
+        .demo-accounts {
+            margin-top: var(--space-24);
+            padding: var(--space-16);
+            background: var(--gray-50);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--gray-700);
+        }
+        
+        .demo-accounts h4 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: var(--space-8);
+            color: var(--gray-800);
+        }
+        
+        .demo-accounts p {
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-icon">📞</div>
+                <h1 class="login-title">呼叫中心管理系统</h1>
+                <p class="login-subtitle">请登录您的账号</p>
+            </div>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" style="margin-bottom: var(--space-20);">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form method="POST" action="{{ url_for('auth.login') }}" class="login-form">
+                <div class="form-group">
+                    <label for="username" class="form-label">用户名</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="form-input" 
+                        placeholder="请输入用户名"
+                        required
+                        autofocus
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">密码</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="请输入密码"
+                        required
+                    >
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    登录
+                </button>
+            </form>
+            
+            <div class="demo-accounts">
+                <h4>🔑 测试账号 (统一密码: 123456)</h4>
+                
+                <!-- 一键填充按钮 -->
+                <div style="display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap;">
+                    <button type="button" onclick="fillLogin('admin', '123456')" style="flex: 1; min-width: 80px; padding: 6px 12px; font-size: 12px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer;">管理员</button>
+                    <button type="button" onclick="fillLogin('manager', '123456')" style="flex: 1; min-width: 80px; padding: 6px 12px; font-size: 12px; background: #764ba2; color: white; border: none; border-radius: 4px; cursor: pointer;">经理</button>
+                    <button type="button" onclick="fillLogin('finance', '123456')" style="flex: 1; min-width: 80px; padding: 6px 12px; font-size: 12px; background: #f093fb; color: white; border: none; border-radius: 4px; cursor: pointer;">财务</button>
+                    <button type="button" onclick="fillLogin('a001', '123456')" style="flex: 1; min-width: 80px; padding: 6px 12px; font-size: 12px; background: #4facfe; color: white; border: none; border-radius: 4px; cursor: pointer;">员工</button>
+                </div>
+                
+                <div style="margin-top: 12px; font-size: 12px; line-height: 1.6;">
+                    <p style="margin-top: 12px; margin-bottom: 6px;"><strong>【可用账号】</strong></p>
+                    <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+                        <p style="margin: 2px 0; color: #666;">• <strong>管理员</strong>: admin</p>
+                        <p style="margin: 2px 0; color: #666;">• <strong>经理</strong>: manager, manager001~005</p>
+                        <p style="margin: 2px 0; color: #666;">• <strong>财务</strong>: finance</p>
+                        <p style="margin: 2px 0; color: #666;">• <strong>员工</strong>: a001~a010 (推荐) 或 cc25001~cc25010</p>
+                    </div>
+                    <p style="margin: 8px 0; color: #28a745; font-weight: 600; text-align: center;">✓ 所有账号统一密码: 123456</p>
+                    
+                    <details style="margin-top: 12px;">
+                        <summary style="cursor: pointer; color: #667eea; font-weight: 600;">💡 无法登录？点击查看解决方案</summary>
+                        <div style="margin-top: 8px; padding: 10px; background: #fff3cd; border-radius: 4px;">
+                            <p style="margin-bottom: 6px; font-weight: 600;">方法1: 运行修复命令</p>
+                            <code style="display: block; background: #f5f5f5; padding: 6px; border-radius: 3px; margin-bottom: 8px;">python3 fix_employee_accounts.py</code>
+                            <p style="margin-bottom: 6px; font-weight: 600;">方法2: 使用修复工具</p>
+                            <p>访问: <a href="/check_users_tool" style="color: #667eea;">http://localhost:8080/check_users_tool</a></p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            
+            <script>
+                function fillLogin(username, password) {
+                    document.getElementById('username').value = username;
+                    document.getElementById('password').value = password;
+                    document.getElementById('username').focus();
+                }
+            </script>
+            
+            <div class="login-footer">
+                © 2025 呼叫中心职场管理系统
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

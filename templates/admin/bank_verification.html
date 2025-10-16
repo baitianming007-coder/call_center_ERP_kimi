@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}银行信息审核 - 呼叫中心管理系统{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>🏦 银行信息审核</h1>
+</div>
+<div class="card">
+    <div class="card-header"><h2>待审核</h2></div>
+    <div class="card-body">
+        {% if pending_verifications %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>工号</th><th>姓名</th><th>团队</th><th>银行卡号</th><th>开户行</th><th>户名</th><th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emp in pending_verifications %}
+                <tr>
+                    <td>{{ emp.employee_no }}</td>
+                    <td>{{ emp.name }}</td>
+                    <td>{{ emp.team }}</td>
+                    <td>{{ emp.bank_account_number }}</td>
+                    <td>{{ emp.bank_name }}</td>
+                    <td>{{ emp.account_holder_name }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('admin_ext.verify_bank_info', employee_id=emp.id) }}" style="display: inline;">
+                            <input type="hidden" name="action" value="approve">
+                            <button type="submit" class="btn btn-sm btn-success">通过</button>
+                        </form>
+                        <button class="btn btn-sm btn-danger" onclick="rejectBank({{ emp.id }}, '{{ emp.name }}')">拒绝</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state"><p>暂无待审核</p></div>
+        {% endif %}
+    </div>
+</div>
+<script>
+function rejectBank(id, name) {
+    const reason = prompt(`拒绝 ${name} 的银行信息，请输入原因：`);
+    if (reason) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/admin/bank_verification/${id}/verify`;
+        form.innerHTML = `<input name="action" value="reject"><input name="notes" value="${reason}">`;
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
+{% endblock %}

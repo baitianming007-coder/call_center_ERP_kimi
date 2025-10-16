@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}年度归档 - 呼叫中心管理系统{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>📦 年度归档</h1>
+</div>
+<div class="card" style="margin-bottom: var(--space-24);">
+    <div class="card-header"><h2>创建归档</h2></div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('admin_ext.create_archive') }}">
+            <div style="display: flex; gap: var(--space-12);">
+                <input type="number" name="archive_year" class="form-input" placeholder="年份（如2024）" required min="2020" max="2099">
+                <button type="submit" class="btn btn-primary">创建归档</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header"><h2>归档记录</h2></div>
+    <div class="card-body">
+        {% if archives %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>年份</th><th>总人数</th><th>总记录数</th><th>总金额</th><th>归档时间</th><th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for archive in archives %}
+                <tr>
+                    <td>{{ archive.archive_year }}年</td>
+                    <td>{{ archive.total_employees }}人</td>
+                    <td>{{ archive.total_records }}条</td>
+                    <td>¥{{ "%.2f"|format(archive.total_amount) }}</td>
+                    <td>{{ archive.archived_at }}</td>
+                    <td>
+                        <a href="{{ url_for('admin_ext.view_archive', year=archive.archive_year) }}" class="btn btn-sm btn-info">查看详情</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state"><p>暂无归档记录</p></div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

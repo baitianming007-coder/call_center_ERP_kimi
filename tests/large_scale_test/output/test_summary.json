@@ -1,0 +1,40 @@
+{
+  "generated_at": "2025-10-16T11:07:29.226267",
+  "test_config": {
+    "total_employees": 500,
+    "start_date": "2025-01-01",
+    "end_date": "2025-06-30",
+    "distribution": {
+      "fast_growth": 100,
+      "fluctuating": 200,
+      "underperforming": 125,
+      "edge_case": 75
+    }
+  },
+  "validation_results": {
+    "promotion_validation": {
+      "total_applications": 0,
+      "validated": true,
+      "issues": []
+    },
+    "challenge_validation": {
+      "total_challenges": 0,
+      "validated": true,
+      "issues": []
+    },
+    "salary_validation": {
+      "sample_size": 100,
+      "validated": 100,
+      "errors": 0,
+      "pass_rate": 100.0
+    },
+    "consistency_validation": {
+      "total_employees": 500,
+      "total_performance": 37543,
+      "orphan_performance": 0,
+      "consistent": true
+    }
+  },
+  "trigger_count": 362,
+  "operation_count": 2
+}

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}录入业绩 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div class="mb-24">
+    <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900);">
+        ✏️ 录入业绩
+    </h1>
+</div>
+
+<div class="card" style="max-width: 700px;">
+    <form id="performanceForm" style="padding: var(--space-32);">
+        <div class="form-group">
+            <label class="form-label required">员工</label>
+            <select name="employee_id" id="employee_id" class="form-select" required>
+                <option value="">请选择员工</option>
+                {% for emp in employees %}
+                <option value="{{ emp.id }}">{{ emp.employee_no }} - {{ emp.name }} ({{ emp.team }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label required">日期</label>
+            <input type="date" name="work_date" id="work_date" class="form-input" required>
+        </div>
+        <script>
+            // 设置默认值为今天
+            document.getElementById('work_date').valueAsDate = new Date();
+        </script>
+        
+        <div class="form-group">
+            <label class="form-label required">出单数</label>
+            <input type="number" name="orders_count" id="orders_count" class="form-input" min="0" value="0" required onchange="calculateCommission()">
+            <div id="commissionPreview" style="margin-top: var(--space-8); font-size: 13px; color: var(--color-success);"></div>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">是否有效工作日</label>
+            <div style="display: flex; gap: var(--space-16); align-items: center;">
+                <label style="display: flex; align-items: center; cursor: pointer;">
+                    <input type="radio" name="is_valid_workday" value="1" checked style="margin-right: 8px;">
+                    <span>是</span>
+                </label>
+                <label style="display: flex; align-items: center; cursor: pointer;">
+                    <input type="radio" name="is_valid_workday" value="0" style="margin-right: 8px;">
+                    <span>否</span>
+                </label>
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: var(--space-12); justify-content: flex-end; margin-top: var(--space-32);">
+            <a href="{{ url_for('admin.performance') }}" class="btn btn-secondary">取消</a>
+            <button type="submit" class="btn btn-primary">提交</button>
+        </div>
+    </form>
+</div>
+
+<!-- 提成计算规则 -->
+<div class="card mt-24" style="max-width: 700px;">
+    <div class="card-header">
+        <h3>💡 提成计算规则</h3>
+    </div>
+    <div class="card-body">
+        <ul style="list-style: none; padding: 0; margin: 0; color: var(--gray-700); font-size: 14px; line-height: 1.8;">
+            <li>• 1-3单：<strong>10元/单</strong></li>
+            <li>• 4-5单：<strong>20元/单</strong></li>
+            <li>• ≥6单：<strong>30元/单</strong></li>
+        </ul>
+        <div style="margin-top: var(--space-12); padding: var(--space-12); background: var(--gray-50); border-radius: var(--radius-sm); font-size: 13px; color: var(--gray-600);">
+            例：录入7单 = 前3单(30元) + 第4-5单(40元) + 第6-7单(60元) = 130元
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function calculateCommission() {
+        const orders = parseInt(document.getElementById('orders_count').value) || 0;
+        let commission = 0;
+        
+        if (orders <= 3) {
+            commission = orders * 10;
+        } else if (orders <= 5) {
+            commission = 3 * 10 + (orders - 3) * 20;
+        } else {
+            commission = 3 * 10 + 2 * 20 + (orders - 5) * 30;
+        }
+        
+        document.getElementById('commissionPreview').textContent = 
+            orders > 0 ? `预计提成：¥${commission.toFixed(2)}` : '';
+    }
+    
+    document.getElementById('performanceForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        
+        fetch('{{ url_for("admin.performance_add") }}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                // 重置表单
+                this.reset();
+                document.getElementById('commissionPreview').textContent = '';
+            } else {
+                showToast(data.message, 'danger');
+            }
+        })
+        .catch(error => {
+            showToast('提交失败：' + error, 'danger');
+        });
+    });
+    
+    // 初始计算
+    calculateCommission();
+</script>
+{% endblock %}
+

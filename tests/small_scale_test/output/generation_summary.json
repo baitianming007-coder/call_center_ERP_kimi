@@ -1,0 +1,25 @@
+{
+  "generation_time": "2025-10-16 12:21:14",
+  "employees": {
+    "total": 300,
+    "by_performance_type": {
+      "excellent": 92,
+      "normal": 141,
+      "poor": 67
+    },
+    "by_attendance_type": {
+      "high": 211,
+      "medium": 56,
+      "low": 33
+    }
+  },
+  "performance_records": {
+    "total": 27700,
+    "with_orders": 24000,
+    "total_orders": 82126,
+    "total_revenue": 18475271.999999907
+  },
+  "expected_events": {
+    "promotions": 277
+  }
+}

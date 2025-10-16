@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}呼叫中心职场管理系统{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% if current_user %}
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-container container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">📞 呼叫中心管理系统</a>
+            <ul class="navbar-nav">
+                {% if current_user.role == 'employee' %}
+                    <li><a href="{{ url_for('employee.performance') }}" class="navbar-link">个人业绩</a></li>
+                    <li><a href="{{ url_for('employee.salary') }}" class="navbar-link">个人薪资</a></li>
+                    <li><a href="{{ url_for('employee.profile') }}" class="navbar-link">个人信息</a></li>
+                
+                {% elif current_user.role == 'manager' %}
+                    <li><a href="{{ url_for('admin.dashboard') }}" class="navbar-link">主看板</a></li>
+                    <li><a href="{{ url_for('manager.training_assessments') }}" class="navbar-link">培训考核</a></li>
+                    <li>
+                        <a href="{{ url_for('manager.promotions') }}" class="navbar-link" style="position: relative;">
+                            晋级审批
+                            <span id="promotion-badge" class="nav-badge" style="display: none;"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('manager.challenges') }}" class="navbar-link" style="position: relative;">
+                            保级挑战
+                            <span id="challenge-badge" class="nav-badge" style="display: none;"></span>
+                        </a>
+                    </li>
+                    <li><a href="{{ url_for('admin.performance') }}" class="navbar-link">业绩管理</a></li>
+                    <li><a href="{{ url_for('manager.payroll') }}" class="navbar-link">团队工资</a></li>
+                    <li><a href="{{ url_for('manager.logs') }}" class="navbar-link">操作日志</a></li>
+                
+                {% elif current_user.role == 'finance' %}
+                    <li><a href="{{ url_for('finance.dashboard') }}" class="navbar-link">财务工作台</a></li>
+                    <li><a href="{{ url_for('finance.payment_history') }}" class="navbar-link">发放历史</a></li>
+                    <li><a href="{{ url_for('finance.bank_audit') }}" class="navbar-link">银行审核</a></li>
+                
+                {% elif current_user.role == 'admin' %}
+                    <li><a href="{{ url_for('admin.dashboard') }}" class="navbar-link">主看板</a></li>
+                    <li><a href="{{ url_for('admin.employees') }}" class="navbar-link">员工管理</a></li>
+                    <li><a href="{{ url_for('admin.performance') }}" class="navbar-link">业绩管理</a></li>
+                    <li><a href="{{ url_for('admin.status_check') }}" class="navbar-link">状态检查</a></li>
+                    <li><a href="{{ url_for('admin.salary') }}" class="navbar-link">薪资统计</a></li>
+                    <li><a href="{{ url_for('admin_ext.work_calendar') }}" class="navbar-link">工作日配置</a></li>
+                    <li><a href="{{ url_for('admin_ext.payroll_management') }}" class="navbar-link">工资管理</a></li>
+                    <li><a href="{{ url_for('admin_ext.payroll_archive') }}" class="navbar-link">年度归档</a></li>
+                    <li><a href="{{ url_for('reports.team_comparison') }}" class="navbar-link">数据报表</a></li>
+                    <li><a href="{{ url_for('admin.teams') }}" class="navbar-link">团队管理</a></li>
+                    <li><a href="{{ url_for('manager.logs') }}" class="navbar-link">操作日志</a></li>
+                {% endif %}
+                <li>
+                    <a href="{{ url_for('notifications.notification_center') }}" class="navbar-link" style="position: relative;">
+                        🔔
+                        <span id="notification-badge" style="display: none; position: absolute; top: -5px; right: -10px; background: var(--color-danger); color: white; border-radius: 10px; padding: 2px 6px; font-size: 10px; font-weight: bold;"></span>
+                    </a>
+                </li>
+                <li>
+                    <span style="color: var(--gray-600); margin: 0 8px;">|</span>
+                    <span style="color: var(--gray-700);">{{ current_user.username }} ({{ current_user.role | role_label }})</span>
+                </li>
+                <li><a href="{{ url_for('auth.logout') }}" class="navbar-link">退出</a></li>
+            </ul>
+        </div>
+    </nav>
+    {% endif %}
+
+    <!-- 主内容区 -->
+    <main style="padding: var(--space-32) 0; min-height: calc(100vh - 200px);">
+        <div class="container">
+            <!-- 面包屑导航 -->
+            {% if breadcrumbs %}
+            <nav class="breadcrumb" aria-label="breadcrumb">
+                <ol class="breadcrumb-list">
+                    <li class="breadcrumb-item">
+                        <a href="{{ url_for('admin.dashboard') if current_user.role in ['admin', 'manager'] else url_for('employee.performance') }}">🏠 首页</a>
+                    </li>
+                    {% for item in breadcrumbs %}
+                    <li class="breadcrumb-item{% if loop.last %} active{% endif %}">
+                        {% if item.url and not loop.last %}
+                        <a href="{{ item.url }}">{{ item.name }}</a>
+                        {% else %}
+                        {{ item.name }}
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ol>
+            </nav>
+            {% endif %}
+            
+            <!-- Flash 消息 -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- 页面内容 -->
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer style="background: white; border-top: 1px solid var(--gray-200); padding: var(--space-24) 0; text-align: center; color: var(--gray-600); font-size: 13px;">
+        <div class="container">
+            © 2025 呼叫中心职场管理系统 | 专业团队开发
+        </div>
+    </footer>
+
+    <!-- 引入 Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- 公共 JavaScript -->
+    <script>
+        // 通用：显示确认对话框
+        function confirmAction(message) {
+            return confirm(message || '确定要执行此操作吗？');
+        }
+
+        // P2: 优化的Toast通知系统
+        const ToastManager = {
+            container: null,
+            
+            init() {
+                if (!this.container) {
+                    this.container = document.createElement('div');
+                    this.container.className = 'toast-container';
+                    document.body.appendChild(this.container);
+                }
+            },
+            
+            show(message, type = 'success', title = '', duration = 3000) {
+                this.init();
+                
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                
+                const icons = {
+                    success: '✓',
+                    danger: '✗',
+                    error: '✗',
+                    warning: '⚠',
+                    info: 'ℹ'
+                };
+                
+                toast.innerHTML = `
+                    <div class="toast-icon">${icons[type] || '•'}</div>
+                    <div class="toast-content">
+                        ${title ? `<div class="toast-title">${title}</div>` : ''}
+                        <div class="toast-message">${message}</div>
+                    </div>
+                    <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+                `;
+                
+                this.container.appendChild(toast);
+                
+                if (duration > 0) {
+                    setTimeout(() => {
+                        toast.classList.add('fade-out');
+                        setTimeout(() => toast.remove(), 300);
+                    }, duration);
+                }
+                
+                return toast;
+            }
+        };
+        
+        // 兼容旧代码的showToast函数
+        function showToast(message, type = 'success') {
+            ToastManager.show(message, type);
+        }
+        
+        // P2: Loading管理器
+        const LoadingManager = {
+            overlay: null,
+            
+            show(message = '加载中...') {
+                if (this.overlay) return;
+                
+                this.overlay = document.createElement('div');
+                this.overlay.className = 'loading-overlay';
+                this.overlay.innerHTML = `
+                    <div style="text-align: center;">
+                        <div class="loading-spinner"></div>
+                        <div style="color: white; margin-top: 16px;">${message}</div>
+                    </div>
+                `;
+                document.body.appendChild(this.overlay);
+            },
+            
+            hide() {
+                if (this.overlay) {
+                    this.overlay.remove();
+                    this.overlay = null;
+                }
+            }
+        };
+        
+        // P2: 表格排序功能
+        function initTableSort(tableSelector) {
+            const table = document.querySelector(tableSelector);
+            if (!table) return;
+            
+            const headers = table.querySelectorAll('th.sortable');
+            
+            headers.forEach(header => {
+                header.addEventListener('click', () => {
+                    const columnIndex = Array.from(header.parentElement.children).indexOf(header);
+                    const tbody = table.querySelector('tbody');
+                    const rows = Array.from(tbody.querySelectorAll('tr'));
+                    
+                    // 切换排序方向
+                    const isAsc = header.classList.contains('asc');
+                    headers.forEach(h => h.classList.remove('asc', 'desc'));
+                    header.classList.add(isAsc ? 'desc' : 'asc');
+                    
+                    // 排序
+                    rows.sort((a, b) => {
+                        const aValue = a.children[columnIndex].textContent.trim();
+                        const bValue = b.children[columnIndex].textContent.trim();
+                        
+                        // 尝试数字比较
+                        const aNum = parseFloat(aValue);
+                        const bNum = parseFloat(bValue);
+                        
+                        if (!isNaN(aNum) && !isNaN(bNum)) {
+                            return isAsc ? bNum - aNum : aNum - bNum;
+                        }
+                        
+                        // 字符串比较
+                        return isAsc ? bValue.localeCompare(aValue) : aValue.localeCompare(bValue);
+                    });
+                    
+                    // 重新添加行
+                    rows.forEach(row => tbody.appendChild(row));
+                });
+            });
+        }
+        
+        // P2: 搜索框优化
+        function initSearchBox(inputSelector, clearBtnSelector) {
+            const input = document.querySelector(inputSelector);
+            const clearBtn = document.querySelector(clearBtnSelector);
+            
+            if (!input || !clearBtn) return;
+            
+            input.addEventListener('input', () => {
+                clearBtn.style.display = input.value ? 'flex' : 'none';
+            });
+            
+            clearBtn.addEventListener('click', () => {
+                input.value = '';
+                clearBtn.style.display = 'none';
+                input.focus();
+                // 触发搜索
+                const event = new Event('input', { bubbles: true });
+                input.dispatchEvent(event);
+            });
+        }
+        
+        // P2: 表单验证
+        function validateForm(formSelector) {
+            const form = document.querySelector(formSelector);
+            if (!form) return true;
+            
+            let isValid = true;
+            const requiredFields = form.querySelectorAll('[required]');
+            
+            requiredFields.forEach(field => {
+                const value = field.value.trim();
+                const errorElement = field.parentElement.querySelector('.form-error');
+                
+                if (!value) {
+                    field.classList.add('error');
+                    field.classList.remove('success');
+                    if (!errorElement) {
+                        const error = document.createElement('div');
+                        error.className = 'form-error';
+                        error.textContent = '此字段为必填项';
+                        field.parentElement.appendChild(error);
+                    }
+                    isValid = false;
+                } else {
+                    field.classList.remove('error');
+                    field.classList.add('success');
+                    if (errorElement) {
+                        errorElement.remove();
+                    }
+                }
+            });
+            
+            return isValid;
+        }
+        
+        // P2-11: 一键复制功能（全局）
+        function copyToClipboard(text, label = '内容') {
+            if (!text) {
+                showToast(`没有可复制的${label}`, 'warning');
+                return false;
+            }
+            
+            // 使用现代Clipboard API
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast(`${label}已复制：${text}`, 'success');
+                    return true;
+                }).catch(err => {
+                    return fallbackCopy(text, label);
+                });
+            } else {
+                // 降级方案
+                return fallbackCopy(text, label);
+            }
+        }
+        
+        // 降级复制方案
+        function fallbackCopy(text, label = '内容') {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast(`${label}已复制：${text}`, 'success');
+                } else {
+                    showToast('复制失败，请手动复制', 'danger');
+                }
+                return successful;
+            } catch (err) {
+                showToast('复制失败，请手动复制', 'danger');
+                return false;
+            } finally {
+                document.body.removeChild(textArea);
+            }
+        }
+
+        // P3-12: 图片懒加载
+        document.addEventListener('DOMContentLoaded', function() {
+            const lazyImages = document.querySelectorAll('img[data-src]');
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+            lazyImages.forEach(img => imageObserver.observe(img));
+        });
+
+        // 更新通知数量
+        function updateNotificationCount() {
+            {% if current_user %}
+            fetch('/notifications/api/count')
+                .then(response => response.json())
+                .then(data => {
+                    const badge = document.getElementById('notification-badge');
+                    if (data.count > 0) {
+                        badge.textContent = data.count > 99 ? '99+' : data.count;
+                        badge.style.display = 'block';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                })
+                .catch(error => console.error('获取通知数量失败:', error));
+            {% endif %}
+        }
+
+        // 更新待审批数量（仅经理）
+        function updatePendingCount() {
+            {% if current_user and current_user.role == 'manager' %}
+            fetch('/manager/api/pending_count')
+                .then(response => response.json())
+                .then(data => {
+                    // 更新晋级审批红点
+                    const promotionBadge = document.getElementById('promotion-badge');
+                    if (promotionBadge && data.promotions > 0) {
+                        promotionBadge.textContent = data.promotions > 99 ? '99+' : data.promotions;
+                        promotionBadge.style.display = 'block';
+                    } else if (promotionBadge) {
+                        promotionBadge.style.display = 'none';
+                    }
+                    
+                    // 更新保级挑战红点
+                    const challengeBadge = document.getElementById('challenge-badge');
+                    if (challengeBadge && data.challenges > 0) {
+                        challengeBadge.textContent = data.challenges > 99 ? '99+' : data.challenges;
+                        challengeBadge.style.display = 'block';
+                    } else if (challengeBadge) {
+                        challengeBadge.style.display = 'none';
+                    }
+                })
+                .catch(error => console.error('获取待审批数量失败:', error));
+            {% endif %}
+        }
+
+        // 高亮当前导航页
+        function highlightCurrentNav() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.navbar-link');
+            
+            navLinks.forEach(link => {
+                const linkPath = new URL(link.href).pathname;
+                // 精确匹配或路径前缀匹配
+                if (linkPath === currentPath || 
+                    (currentPath.startsWith(linkPath) && linkPath !== '/')) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // 页面加载时更新通知数量、待审批数量和导航高亮
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNotificationCount();
+            updatePendingCount();
+            highlightCurrentNav();
+            // 每30秒更新一次通知数量和待审批数量
+            setInterval(updateNotificationCount, 30000);
+            setInterval(updatePendingCount, 30000);
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+

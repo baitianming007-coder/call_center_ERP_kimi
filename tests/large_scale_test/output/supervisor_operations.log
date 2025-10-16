@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2025-10-16T11:07:29.200442",
+    "type": "promotion",
+    "operation": "reject"
+  },
+  {
+    "timestamp": "2025-10-16T11:07:29.207362",
+    "type": "challenge",
+    "operation": "decide"
+  }
+]

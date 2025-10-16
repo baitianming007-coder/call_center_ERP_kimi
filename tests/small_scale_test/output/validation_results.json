@@ -1,0 +1,28 @@
+{
+  "promotion_validation": {
+    "status_distribution": {
+      "B": 149,
+      "C": 136,
+      "trainee": 15
+    },
+    "promotion_counts": {
+      "C→B": 298,
+      "trainee→C": 570
+    },
+    "total_promotions": 868
+  },
+  "salary_validation": {
+    "sample_size": 100,
+    "validated": 100,
+    "errors": 0,
+    "accuracy_rate": 100.0
+  },
+  "data_consistency": {
+    "employee_count": 300,
+    "performance_count": 26089,
+    "promotion_count": 868,
+    "user_count": 300,
+    "issues": []
+  },
+  "issues": []
+}

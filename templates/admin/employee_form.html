@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}{% if action == 'add' %}添加员工{% else %}编辑员工{% endif %} - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div class="mb-24">
+    <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900);">
+        {% if action == 'add' %}➕ 添加员工{% else %}✏️ 编辑员工{% endif %}
+    </h1>
+</div>
+
+<div class="card" style="max-width: 700px;">
+    <form method="POST" style="padding: var(--space-32);">
+        {% if action == 'add' %}
+        <div class="form-group">
+            <label class="form-label required">工号</label>
+            <input type="text" name="employee_no" class="form-input" placeholder="例如：A001" required>
+        </div>
+        {% endif %}
+        
+        <div class="form-group">
+            <label class="form-label required">姓名</label>
+            <input type="text" name="name" class="form-input" value="{{ employee.name if employee else '' }}" placeholder="员工姓名" required>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">手机号</label>
+            <input type="tel" name="phone" class="form-input" value="{{ employee.phone if employee else '' }}" placeholder="11位手机号" maxlength="11">
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label required">团队</label>
+            <select name="team" class="form-select" required>
+                <option value="">请选择团队</option>
+                {% for t in teams %}
+                <option value="{{ t.team_name }}" {% if employee and employee.team == t.team_name %}selected{% endif %}>
+                    {{ t.team_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        {% if action == 'edit' %}
+        <div class="form-group">
+            <label class="form-label required">状态</label>
+            <select name="status" class="form-select" required>
+                <option value="trainee" {% if employee.status == 'trainee' %}selected{% endif %}>培训期</option>
+                <option value="C" {% if employee.status == 'C' %}selected{% endif %}>C级</option>
+                <option value="B" {% if employee.status == 'B' %}selected{% endif %}>B级</option>
+                <option value="A" {% if employee.status == 'A' %}selected{% endif %}>A级</option>
+                <option value="eliminated" {% if employee.status == 'eliminated' %}selected{% endif %}>已淘汰</option>
+            </select>
+        </div>
+        {% endif %}
+        
+        {% if action == 'add' %}
+        <div class="form-group">
+            <label class="form-label required">入职日期</label>
+            <input type="date" name="join_date" class="form-input" required>
+        </div>
+        {% endif %}
+        
+        <div style="display: flex; gap: var(--space-12); justify-content: flex-end; margin-top: var(--space-32);">
+            <a href="{{ url_for('admin.employees') }}" class="btn btn-secondary">取消</a>
+            <button type="submit" class="btn btn-primary">{% if action == 'add' %}添加{% else %}保存{% endif %}</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

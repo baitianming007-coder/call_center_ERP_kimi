@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% block title %}银行信息审核 - 呼叫中心管理系统{% endblock %}
+{% block content %}
+<div class="flex-between mb-24">
+    <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900);">
+        🏦 银行信息审核
+    </h1>
+    <div style="display: flex; gap: var(--space-12);">
+        <span class="badge badge-warning">待审核: {{ pending_verifications|length }}</span>
+    </div>
+</div>
+
+<!-- P2-12: 批量操作浮动工具栏 -->
+<div id="batchActionBar" class="batch-action-bar" style="display: none;">
+    <div class="batch-action-content">
+        <span id="selectedCount">已选择 0 项</span>
+        <div class="batch-action-buttons">
+            <button class="btn btn-success" onclick="batchApprove()">批量通过</button>
+            <button class="btn btn-danger" onclick="batchReject()">批量拒绝</button>
+            <button class="btn btn-secondary" onclick="clearSelection()">取消选择</button>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom: var(--space-24);">
+    <div class="card-header">
+        <h2>待审核</h2>
+    </div>
+    <div class="card-body">
+        {% if pending_verifications %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 40px;">
+                        <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)">
+                    </th>
+                    <th>工号</th><th>姓名</th><th>团队</th><th>银行卡号</th><th>开户行</th><th>户名</th><th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emp in pending_verifications %}
+                <tr>
+                    <td>
+                        <input type="checkbox" class="row-checkbox" value="{{ emp.id }}" onchange="updateSelection()">
+                    </td>
+                    <td>{{ emp.employee_no }}</td>
+                    <td>{{ emp.name }}</td>
+                    <td>{{ emp.team }}</td>
+                    <td>{{ emp.bank_account_number }}</td>
+                    <td>{{ emp.bank_name }}</td>
+                    <td>{{ emp.account_holder_name }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('finance.verify_bank', employee_id=emp.id) }}" style="display: inline;">
+                            <input type="hidden" name="action" value="approve">
+                            <button type="submit" class="btn btn-sm btn-success">通过</button>
+                        </form>
+                        <button class="btn btn-sm btn-danger" onclick="rejectBank({{ emp.id }}, '{{ emp.name }}')">拒绝</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">🏦</div>
+            <p class="empty-text">暂无待审核的银行信息</p>
+            <p class="empty-hint">所有银行信息已审核完毕</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<div class="card">
+    <div class="card-header"><h2>审核历史</h2></div>
+    <div class="card-body">
+        {% if audit_history %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>工号</th><th>姓名</th><th>银行卡号</th><th>户名</th><th>状态</th><th>审核时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emp in audit_history %}
+                <tr>
+                    <td>{{ emp.employee_no }}</td>
+                    <td>{{ emp.name }}</td>
+                    <td>{{ emp.bank_account_number }}</td>
+                    <td>{{ emp.account_holder_name }}</td>
+                    <td>
+                        {% if emp.bank_info_status == 'verified' %}
+                        <span class="badge badge-success">已通过</span>
+                        {% else %}
+                        <span class="badge badge-danger">已拒绝</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ emp.bank_verified_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state"><p>暂无历史</p></div>
+        {% endif %}
+    </div>
+</div>
+<script>
+// P2-12: 批量选择和操作
+function toggleSelectAll(checkbox) {
+    const checkboxes = document.querySelectorAll('.row-checkbox');
+    checkboxes.forEach(cb => {
+        cb.checked = checkbox.checked;
+    });
+    updateSelection();
+}
+
+function updateSelection() {
+    const checkboxes = document.querySelectorAll('.row-checkbox:checked');
+    const count = checkboxes.length;
+    const actionBar = document.getElementById('batchActionBar');
+    const selectedCount = document.getElementById('selectedCount');
+    const selectAll = document.getElementById('selectAll');
+    
+    if (count > 0) {
+        actionBar.style.display = 'block';
+        selectedCount.textContent = `已选择 ${count} 项`;
+    } else {
+        actionBar.style.display = 'none';
+    }
+    
+    // 更新全选checkbox状态
+    const totalCheckboxes = document.querySelectorAll('.row-checkbox').length;
+    selectAll.checked = count === totalCheckboxes && count > 0;
+    selectAll.indeterminate = count > 0 && count < totalCheckboxes;
+}
+
+function clearSelection() {
+    document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = false);
+    document.getElementById('selectAll').checked = false;
+    updateSelection();
+}
+
+function getSelectedIds() {
+    const checkboxes = document.querySelectorAll('.row-checkbox:checked');
+    return Array.from(checkboxes).map(cb => parseInt(cb.value));
+}
+
+// P2-12: 批量通过
+function batchApprove() {
+    const ids = getSelectedIds();
+    if (ids.length === 0) {
+        showToast('请先选择要审核的项目', 'warning');
+        return;
+    }
+    
+    if (!confirm(`确认通过这 ${ids.length} 条银行信息？`)) {
+        return;
+    }
+    
+    LoadingManager.show('正在批量审核...');
+    
+    fetch('/finance/batch_audit_bank', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            employee_ids: ids,
+            action: 'approve'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        LoadingManager.hide();
+        if (data.success) {
+            showToast(`成功审核 ${data.approved_count} 条记录`, 'success');
+            setTimeout(() => location.reload(), 1500);
+        } else {
+            showToast(data.message || '批量审核失败', 'danger');
+        }
+    })
+    .catch(error => {
+        LoadingManager.hide();
+        showToast('操作失败: ' + error.message, 'danger');
+    });
+}
+
+// P2-12: 批量拒绝
+function batchReject() {
+    const ids = getSelectedIds();
+    if (ids.length === 0) {
+        showToast('请先选择要审核的项目', 'warning');
+        return;
+    }
+    
+    const reason = prompt(`批量拒绝这 ${ids.length} 条银行信息，请输入原因：`);
+    if (!reason || !reason.trim()) {
+        showToast('请输入拒绝原因', 'warning');
+        return;
+    }
+    
+    LoadingManager.show('正在批量审核...');
+    
+    fetch('/finance/batch_audit_bank', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            employee_ids: ids,
+            action: 'reject',
+            notes: reason
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        LoadingManager.hide();
+        if (data.success) {
+            showToast(`成功拒绝 ${data.rejected_count} 条记录`, 'success');
+            setTimeout(() => location.reload(), 1500);
+        } else {
+            showToast(data.message || '批量审核失败', 'danger');
+        }
+    })
+    .catch(error => {
+        LoadingManager.hide();
+        showToast('操作失败: ' + error.message, 'danger');
+    });
+}
+
+// 单条拒绝
+function rejectBank(id, name) {
+    const reason = prompt(`拒绝 ${name} 的银行信息，请输入原因：`);
+    if (reason) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/finance/bank_audit/${id}/verify`;
+        form.innerHTML = `<input name="action" value="reject"><input name="notes" value="${reason}">`;
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
+{% endblock %}

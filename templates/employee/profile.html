@@ -1,0 +1,376 @@
+{% extends "base.html" %}
+
+{% block title %}个人中心 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: var(--space-32);">
+    <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900);">
+        👤 个人中心
+    </h1>
+    <p style="color: var(--gray-600); margin-top: var(--space-8);">
+        查看您的个人档案、业绩统计和薪资记录
+    </p>
+</div>
+
+<!-- P2-15: 快速数据卡片 -->
+<div class="grid grid-cols-4" style="gap: var(--space-16); margin-bottom: var(--space-24);">
+    <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">💼</div>
+        <div class="stat-label">当前等级</div>
+        <div class="stat-value">{{ current_status_name }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">📊</div>
+        <div class="stat-label">30天出单</div>
+        <div class="stat-value">{{ performance_stats.total_orders or 0 }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">💰</div>
+        <div class="stat-label">30天提成</div>
+        <div class="stat-value">¥{{ performance_stats.total_commission|round(2) if performance_stats.total_commission else 0 }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">📅</div>
+        <div class="stat-label">在职天数</div>
+        <div class="stat-value">{{ days_employed }}天</div>
+    </div>
+</div>
+
+<div class="grid grid-cols-2" style="gap: var(--space-24);">
+    <!-- 基本信息 -->
+    <div class="card">
+        <div class="card-header">
+            <h3>📋 基本信息</h3>
+        </div>
+        <div class="card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-16);">
+                <div class="info-row">
+                    <span class="info-label">工号</span>
+                    <span class="info-value">{{ employee.employee_no }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">姓名</span>
+                    <span class="info-value">{{ employee.name }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">手机号</span>
+                    <span class="info-value">
+                        <span id="phoneDisplay">{{ phone_display or '未设置' }}</span>
+                        <button class="btn btn-xs btn-secondary" onclick="showEditPhone()" style="margin-left: var(--space-8);">修改</button>
+                    </span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">所属团队</span>
+                    <span class="info-value">{{ employee.team }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">入职日期</span>
+                    <span class="info-value">{{ employee.join_date }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- P2-15: 银行信息 -->
+    <div class="card">
+        <div class="card-header">
+            <h3>🏦 银行信息</h3>
+        </div>
+        <div class="card-body">
+            {% if employee.bank_account_number %}
+            <div style="display: flex; flex-direction: column; gap: var(--space-16);">
+                <div class="info-row">
+                    <span class="info-label">银行卡号</span>
+                    <span class="info-value">{{ employee.bank_account_number }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">开户行</span>
+                    <span class="info-value">{{ employee.bank_name }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">户名</span>
+                    <span class="info-value">{{ employee.account_holder_name }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">审核状态</span>
+                    <span class="info-value">
+                        {% if employee.bank_info_status == 'verified' %}
+                        <span class="badge badge-success">已审核</span>
+                        {% elif employee.bank_info_status == 'pending' %}
+                        <span class="badge badge-warning">待审核</span>
+                        {% else %}
+                        <span class="badge badge-danger">已拒绝</span>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">🏦</div>
+                <p class="empty-text">尚未填写银行信息</p>
+                <p class="empty-hint">请联系管理员填写</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- P2-15: 近30天业绩统计 -->
+<div class="card" style="margin-top: var(--space-24);">
+    <div class="card-header">
+        <h3>📊 近30天业绩统计</h3>
+    </div>
+    <div class="card-body">
+        {% if performance_stats and performance_stats.days_worked > 0 %}
+        <div class="grid grid-cols-4" style="gap: var(--space-16);">
+            <div style="text-align: center; padding: var(--space-16); background: var(--gray-50); border-radius: var(--radius-md);">
+                <div style="font-size: 24px; font-weight: 700; color: var(--color-primary);">{{ performance_stats.days_worked }}</div>
+                <div style="font-size: 14px; color: var(--gray-600); margin-top: 4px;">工作天数</div>
+            </div>
+            
+            <div style="text-align: center; padding: var(--space-16); background: var(--gray-50); border-radius: var(--radius-md);">
+                <div style="font-size: 24px; font-weight: 700; color: var(--color-success);">{{ performance_stats.total_orders }}</div>
+                <div style="font-size: 14px; color: var(--gray-600); margin-top: 4px;">总出单数</div>
+            </div>
+            
+            <div style="text-align: center; padding: var(--space-16); background: var(--gray-50); border-radius: var(--radius-md);">
+                <div style="font-size: 24px; font-weight: 700; color: var(--color-info);">{{ performance_stats.avg_orders_per_day|round(1) }}</div>
+                <div style="font-size: 14px; color: var(--gray-600); margin-top: 4px;">日均出单</div>
+            </div>
+            
+            <div style="text-align: center; padding: var(--space-16); background: var(--gray-50); border-radius: var(--radius-md);">
+                <div style="font-size: 24px; font-weight: 700; color: var(--color-warning);">¥{{ performance_stats.total_commission|round(2) }}</div>
+                <div style="font-size: 14px; color: var(--gray-600); margin-top: 4px;">总提成</div>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📊</div>
+            <p class="empty-text">近30天暂无业绩记录</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- P2-15: 近6个月薪资记录 -->
+<div class="card" style="margin-top: var(--space-24);">
+    <div class="card-header">
+        <h3>💰 近6个月薪资记录</h3>
+    </div>
+    <div class="card-body">
+        {% if salary_history %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>年月</th>
+                    <th>底薪</th>
+                    <th>提成</th>
+                    <th>总薪资</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for salary in salary_history %}
+                <tr>
+                    <td><strong>{{ salary.year_month }}</strong></td>
+                    <td>¥{{ salary.base_salary|round(2) }}</td>
+                    <td>¥{{ salary.commission|round(2) }}</td>
+                    <td style="font-weight: 600; color: var(--color-success);">¥{{ salary.total_salary|round(2) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">💰</div>
+            <p class="empty-text">暂无薪资记录</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 状态变更历史 -->
+<div class="card" style="margin-top: var(--space-24);">
+    <div class="card-header">
+        <h3>📈 状态变更历史</h3>
+    </div>
+    <div class="card-body">
+        {% if status_history %}
+        <div style="max-height: 400px; overflow-y: auto;">
+            {% for record in status_history %}
+            <div style="padding: var(--space-12); border-left: 3px solid var(--color-primary); margin-bottom: var(--space-12); background: var(--gray-50); border-radius: var(--radius-sm);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                    <div>
+                        <span class="badge badge-info">{{ record.from_status }}</span>
+                        <span style="margin: 0 8px;">→</span>
+                        <span class="badge badge-success">{{ record.to_status }}</span>
+                    </div>
+                    <span style="font-size: 12px; color: var(--gray-600);">{{ record.change_date }}</span>
+                </div>
+                <div style="font-size: 13px; color: var(--gray-700);">
+                    {{ record.reason }}
+                </div>
+                <div style="font-size: 12px; color: var(--gray-500); margin-top: 4px;">
+                    在原状态 {{ record.days_in_status }} 天
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📈</div>
+            <p class="empty-text">暂无状态变更记录</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 修改手机号弹窗 -->
+<div id="editPhoneModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: white; border-radius: var(--radius-md); max-width: 420px; width: 90%;">
+        <div style="padding: var(--space-24); border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 18px; font-weight: 600; margin: 0;">修改手机号</h3>
+            <button onclick="closeEditPhone()" style="border: none; background: none; font-size: 24px; cursor: pointer; color: var(--gray-600);">&times;</button>
+        </div>
+        <div style="padding: var(--space-24);">
+            <form id="phoneForm" onsubmit="updatePhone(event)">
+                <div class="form-group">
+                    <label class="form-label required">新手机号</label>
+                    <input type="tel" id="newPhone" class="form-input" placeholder="请输入11位手机号" maxlength="11" required>
+                </div>
+                <div style="display: flex; gap: var(--space-12); justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditPhone()">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+/* P2-15: 个人中心样式 */
+.stat-card {
+    padding: var(--space-20);
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid var(--gray-200);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: var(--space-12);
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--gray-600);
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gray-900);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-12) 0;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-size: 14px;
+    color: var(--gray-600);
+}
+
+.info-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+.btn-xs {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+</style>
+
+<script>
+    function showEditPhone() {
+        document.getElementById('editPhoneModal').style.display = 'flex';
+        document.getElementById('newPhone').value = '';
+    }
+    
+    function closeEditPhone() {
+        document.getElementById('editPhoneModal').style.display = 'none';
+    }
+    
+    function updatePhone(event) {
+        event.preventDefault();
+        
+        const phone = document.getElementById('newPhone').value.trim();
+        
+        if (!/^1\d{10}$/.test(phone)) {
+            showToast('请输入正确的手机号', 'danger');
+            return;
+        }
+        
+        fetch('{{ url_for("employee.update_phone") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'phone=' + encodeURIComponent(phone)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                document.getElementById('phoneDisplay').textContent = phone;
+                closeEditPhone();
+            } else {
+                showToast(data.message, 'danger');
+            }
+        })
+        .catch(error => {
+            showToast('更新失败：' + error, 'danger');
+        });
+    }
+    
+    // 点击遮罩关闭
+    document.getElementById('editPhoneModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeEditPhone();
+        }
+    });
+</script>
+{% endblock %}

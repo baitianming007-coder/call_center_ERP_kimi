@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}个人业绩 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: var(--space-32);">
+    <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900); margin-bottom: var(--space-8);">
+        个人业绩
+    </h1>
+    <p style="color: var(--gray-600);">
+        {{ employee.name }} ({{ employee.employee_no }}) · {{ employee.team }} · {{ employee.status | status_label }}
+    </p>
+</div>
+
+<!-- 统计卡片 -->
+<div class="grid grid-cols-4 mb-24">
+    <div class="stat-card">
+        <div class="stat-label">今日出单</div>
+        <div class="stat-value" style="color: var(--color-primary);">{{ today_orders }}</div>
+        <div style="margin-top: var(--space-8); font-size: 13px; color: var(--gray-600);">
+            提成 {{ today_commission | format_currency }}
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-label">本月累计</div>
+        <div class="stat-value" style="color: var(--color-success);">{{ month_orders }}</div>
+        <div style="margin-top: var(--space-8); font-size: 13px; color: var(--gray-600);">
+            工作 {{ month_work_days }} 天
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-label">最近{{ recent_days }}天</div>
+        <div class="stat-value" style="color: var(--color-warning);">{{ recent_orders }}</div>
+        <div style="margin-top: var(--space-8); font-size: 13px; color: var(--gray-600);">
+            提成 {{ recent_commission | format_currency }}
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-label">本月提成</div>
+        <div class="stat-value" style="color: var(--color-info); font-size: 28px;">
+            {{ month_commission | format_currency }}
+        </div>
+        <div style="margin-top: var(--space-8); font-size: 13px; color: var(--gray-600);">
+            累计
+        </div>
+    </div>
+</div>
+
+<!-- 最近7天趋势图 -->
+<div class="card mb-24">
+    <div class="card-header">
+        <h3>最近7天出单趋势</h3>
+    </div>
+    <div class="card-body">
+        <canvas id="performanceChart" height="80"></canvas>
+    </div>
+</div>
+
+<!-- 业绩说明 -->
+<div class="card">
+    <div class="card-header">
+        <h3>📊 业绩说明</h3>
+    </div>
+    <div class="card-body">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-24);">
+            <div>
+                <h4 style="font-size: 14px; font-weight: 600; color: var(--gray-800); margin-bottom: var(--space-12);">
+                    日提成规则
+                </h4>
+                <ul style="list-style: none; padding: 0; margin: 0; color: var(--gray-700); font-size: 14px; line-height: 1.8;">
+                    <li>• 1-3单：<strong>10元/单</strong></li>
+                    <li>• 4-5单：<strong>20元/单</strong></li>
+                    <li>• ≥6单：<strong>30元/单</strong></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 style="font-size: 14px; font-weight: 600; color: var(--gray-800); margin-bottom: var(--space-12);">
+                    考核周期
+                </h4>
+                <ul style="list-style: none; padding: 0; margin: 0; color: var(--gray-700); font-size: 14px; line-height: 1.8;">
+                    <li>• C级员工：考核最近<strong>3天</strong>出单数</li>
+                    <li>• B级员工：考核最近<strong>6天</strong>出单数</li>
+                    <li>• A级员工：考核最近<strong>6天</strong>出单数 + 月度有效工作日</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 渲染业绩趋势图
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    const chartData = {{ chart_data | tojson }};
+    
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chartData.map(d => d.date),
+            datasets: [{
+                label: '出单数',
+                data: chartData.map(d => d.orders),
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                borderColor: 'rgba(37, 99, 235, 1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,  // 平滑曲线
+                pointRadius: 5,
+                pointHoverRadius: 7,
+                pointBackgroundColor: 'rgba(37, 99, 235, 1)',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointHoverBackgroundColor: 'rgba(37, 99, 235, 1)',
+                pointHoverBorderColor: '#fff',
+                pointHoverBorderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                    titleFont: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 13
+                    },
+                    callbacks: {
+                        afterLabel: function(context) {
+                            const commission = chartData[context.dataIndex].commission;
+                            return '提成：¥' + commission.toFixed(2);
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1,
+                        font: {
+                            size: 12
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(229, 231, 235, 0.6)',
+                        drawBorder: false
+                    }
+                },
+                x: {
+                    ticks: {
+                        font: {
+                            size: 12
+                        }
+                    },
+                    grid: {
+                        display: false,
+                        drawBorder: false
+                    }
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            }
+        }
+    });
+</script>
+{% endblock %}
+
+
+

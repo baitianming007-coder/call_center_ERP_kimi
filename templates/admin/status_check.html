@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}状态检查 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div class="mb-24">
+    <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900); margin-bottom: var(--space-8);">
+        🔄 状态变更检查
+    </h1>
+    <p style="color: var(--gray-600);">系统检测到 {{ changes|length }} 名员工需要变更状态</p>
+</div>
+
+<!-- 待变更列表 -->
+{% if changes %}
+<div class="card">
+    <div class="card-header flex-between">
+        <h3>待变更员工列表</h3>
+        <button class="btn btn-success" onclick="applyAllChanges()">批量应用全部</button>
+    </div>
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>工号</th>
+                    <th>姓名</th>
+                    <th>团队</th>
+                    <th>当前状态</th>
+                    <th>→</th>
+                    <th>新状态</th>
+                    <th>变更原因</th>
+                    <th>在岗天数</th>
+                    <th style="text-align: right;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for change in changes %}
+                <tr id="change-row-{{ change.employee_id }}">
+                    <td><strong>{{ change.employee_no }}</strong></td>
+                    <td>{{ change.name }}</td>
+                    <td>{{ change.team }}</td>
+                    <td>
+                        <span class="badge badge-{{ change.old_status }}">{{ change.old_status | status_label }}</span>
+                    </td>
+                    <td style="text-align: center; font-size: 18px;">→</td>
+                    <td>
+                        <span class="badge badge-{{ change.new_status }}">{{ change.new_status | status_label }}</span>
+                    </td>
+                    <td style="color: var(--gray-700);">{{ change.reason }}</td>
+                    <td>{{ change.days_in_status }} 天</td>
+                    <td class="actions">
+                        <button 
+                            class="btn btn-sm btn-primary" 
+                            onclick="applyChange({{ change.employee_id }}, '{{ change.new_status }}', '{{ change.reason }}', {{ change.days_in_status }}, '{{ change.name }}')"
+                        >
+                            应用
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 状态流转规则说明 -->
+<div class="card mt-24">
+    <div class="card-header">
+        <h3>📋 状态流转规则</h3>
+    </div>
+    <div class="card-body">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-24);">
+            <div>
+                <h4 style="font-size: 14px; font-weight: 600; margin-bottom: var(--space-12); color: var(--gray-800);">晋升规则</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; color: var(--gray-700); font-size: 14px; line-height: 1.8;">
+                    <li>• 培训期 → C级：在岗满 <strong>3天</strong></li>
+                    <li>• C级 → B级：在岗≤6天 且 最近3天出单≥<strong>3单</strong></li>
+                    <li>• B级 → A级：在岗≤9天 且 最近6天出单≥<strong>12单</strong></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 style="font-size: 14px; font-weight: 600; margin-bottom: var(--space-12); color: var(--gray-800);">降级/淘汰规则</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; color: var(--gray-700); font-size: 14px; line-height: 1.8;">
+                    <li>• C级 → 淘汰：在岗>6天 且 最近3天出单<strong><3单</strong></li>
+                    <li>• B级 → C级：在岗>9天 且 最近6天出单<strong><12单</strong></li>
+                    <li>• A级 → C级：最近6天出单≤12 或 月末有效工作日<20</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<!-- 无待变更 -->
+<div class="card">
+    <div class="card-body" style="text-align: center; padding: var(--space-48);">
+        <div style="font-size: 64px; margin-bottom: var(--space-16);">✅</div>
+        <h3 style="font-size: 20px; font-weight: 600; color: var(--gray-900); margin-bottom: var(--space-8);">
+            所有员工状态正常
+        </h3>
+        <p style="color: var(--gray-600);">
+            当前没有需要变更状态的员工
+        </p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function applyChange(employeeId, newStatus, reason, daysInStatus, name) {
+        if (!confirmAction(`确定要将员工"${name}"的状态变更为"${newStatus}"吗？`)) {
+            return;
+        }
+        
+        fetch('{{ url_for("admin.status_change_apply") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                employee_id: employeeId,
+                new_status: newStatus,
+                reason: reason,
+                days_in_status: daysInStatus
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                // 移除该行
+                const row = document.getElementById(`change-row-${employeeId}`);
+                if (row) {
+                    row.style.transition = 'opacity 0.3s';
+                    row.style.opacity = '0';
+                    setTimeout(() => row.remove(), 300);
+                }
+            } else {
+                showToast(data.message, 'danger');
+            }
+        })
+        .catch(error => {
+            showToast('操作失败：' + error, 'danger');
+        });
+    }
+    
+    function applyAllChanges() {
+        if (!confirmAction(`确定要批量应用全部 {{ changes|length }} 条状态变更吗？`)) {
+            return;
+        }
+        
+        const changes = {{ changes | tojson }};
+        let successCount = 0;
+        let failCount = 0;
+        
+        // 依次处理每个变更
+        Promise.all(changes.map(change => {
+            return fetch('{{ url_for("admin.status_change_apply") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    employee_id: change.employee_id,
+                    new_status: change.new_status,
+                    reason: change.reason,
+                    days_in_status: change.days_in_status
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    successCount++;
+                } else {
+                    failCount++;
+                }
+            });
+        }))
+        .then(() => {
+            showToast(`批量应用完成：成功 ${successCount} 条，失败 ${failCount} 条`, 'success');
+            setTimeout(() => location.reload(), 1500);
+        })
+        .catch(error => {
+            showToast('批量操作失败：' + error, 'danger');
+        });
+    }
+</script>
+{% endblock %}
+
+
+

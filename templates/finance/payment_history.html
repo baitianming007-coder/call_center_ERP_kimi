@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}发放历史 - 呼叫中心管理系统{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>📋 发放历史</h1>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h2>{{ year_month }}月</h2>
+        <form method="GET" style="display: inline-block;">
+            <input type="month" name="year_month" value="{{ year_month }}" class="form-input" onchange="this.form.submit()">
+            <select name="status" class="form-select" onchange="this.form.submit()">
+                <option value="">全部状态</option>
+                <option value="paid" {% if status_filter=='paid' %}selected{% endif %}>已发放</option>
+                <option value="failed" {% if status_filter=='failed' %}selected{% endif %}>失败</option>
+            </select>
+        </form>
+    </div>
+    <div class="card-body">
+        {% if records %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>工号</th><th>姓名</th><th>金额</th><th>发放方式</th><th>发放日期</th><th>状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in records %}
+                <tr>
+                    <td>{{ r.employee_no }}</td>
+                    <td>{{ r.employee_name }}</td>
+                    <td>¥{{ "%.2f"|format(r.total_salary) }}</td>
+                    <td>
+                        {% if r.payment_method == 'bank_transfer' %}银行转账
+                        {% elif r.payment_method == 'cash' %}现金
+                        {% else %}{{ r.payment_method }}
+                        {% endif %}
+                    </td>
+                    <td>{{ r.payment_date }}</td>
+                    <td>
+                        {% if r.status == 'paid' %}<span class="badge badge-success">已发放</span>
+                        {% elif r.status == 'failed' %}<span class="badge badge-danger">失败</span>
+                        {% else %}<span class="badge badge-warning">{{ r.status }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state"><p>暂无记录</p></div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}批量录入业绩 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div class="mb-24">
+    <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900);">
+        📝 批量录入业绩
+    </h1>
+    <p style="color: var(--gray-600); margin-top: var(--space-8);">
+        为多名员工同时录入指定日期的业绩数据
+    </p>
+</div>
+
+<!-- 日期选择 -->
+<div class="card mb-24">
+    <div class="card-body">
+        <div class="form-group" style="max-width: 300px; margin: 0;">
+            <label class="form-label required">录入日期</label>
+            <input type="date" id="batchDate" class="form-input" value="{{ default_date }}">
+        </div>
+    </div>
+</div>
+
+<!-- 批量录入表格 -->
+<div class="card">
+    <div class="card-header">
+        <h3>员工业绩录入</h3>
+    </div>
+    <div class="card-body">
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>工号</th>
+                        <th>姓名</th>
+                        <th>状态</th>
+                        <th>出单数</th>
+                        <th>预计提成</th>
+                        <th>有效工作日</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for emp in employees %}
+                    <tr>
+                        <td><strong>{{ emp.employee_no }}</strong></td>
+                        <td>{{ emp.name }}</td>
+                        <td>
+                            <span class="badge badge-{{ emp.status }}">{{ emp.status | status_label }}</span>
+                        </td>
+                        <td>
+                            <input 
+                                type="number" 
+                                class="form-input orders-input" 
+                                style="width: 100px;"
+                                min="0" 
+                                value="0"
+                                data-employee-id="{{ emp.id }}"
+                                onchange="calculateBatchCommission(this)"
+                            >
+                        </td>
+                        <td>
+                            <span class="commission-display" data-employee-id="{{ emp.id }}" style="color: var(--color-success); font-weight: 600;">
+                                ¥0.00
+                            </span>
+                        </td>
+                        <td>
+                            <input 
+                                type="checkbox" 
+                                class="valid-checkbox" 
+                                data-employee-id="{{ emp.id }}"
+                                checked
+                                style="width: 18px; height: 18px; cursor: pointer;"
+                            >
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="margin-top: var(--space-24); display: flex; justify-content: space-between; align-items: center;">
+            <div style="color: var(--gray-600);">
+                总提成预估：<strong id="totalCommission" style="color: var(--color-success); font-size: 18px;">¥0.00</strong>
+            </div>
+            <div style="display: flex; gap: var(--space-12);">
+                <a href="{{ url_for('admin.performance') }}" class="btn btn-secondary">取消</a>
+                <button class="btn btn-primary" onclick="submitBatch()">提交批量录入</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function calculateCommission(orders) {
+        if (orders <= 3) return orders * 10;
+        if (orders <= 5) return 3 * 10 + (orders - 3) * 20;
+        return 3 * 10 + 2 * 20 + (orders - 5) * 30;
+    }
+    
+    function calculateBatchCommission(input) {
+        const orders = parseInt(input.value) || 0;
+        const empId = input.dataset.employeeId;
+        const commission = calculateCommission(orders);
+        
+        const display = document.querySelector(`.commission-display[data-employee-id="${empId}"]`);
+        display.textContent = '¥' + commission.toFixed(2);
+        
+        updateTotalCommission();
+    }
+    
+    function updateTotalCommission() {
+        let total = 0;
+        document.querySelectorAll('.orders-input').forEach(input => {
+            const orders = parseInt(input.value) || 0;
+            total += calculateCommission(orders);
+        });
+        document.getElementById('totalCommission').textContent = '¥' + total.toFixed(2);
+    }
+    
+    function submitBatch() {
+        const date = document.getElementById('batchDate').value;
+        if (!date) {
+            showToast('请选择录入日期', 'warning');
+            return;
+        }
+        
+        const batchData = [];
+        document.querySelectorAll('.orders-input').forEach(input => {
+            const orders = parseInt(input.value) || 0;
+            if (orders > 0) {
+                const empId = input.dataset.employeeId;
+                const isValid = document.querySelector(`.valid-checkbox[data-employee-id="${empId}"]`).checked ? 1 : 0;
+                batchData.push({
+                    employee_id: empId,
+                    orders_count: orders,
+                    is_valid_workday: isValid
+                });
+            }
+        });
+        
+        if (batchData.length === 0) {
+            showToast('请至少录入一条数据', 'warning');
+            return;
+        }
+        
+        if (!confirmAction(`确定要为 ${batchData.length} 名员工批量录入业绩吗？`)) {
+            return;
+        }
+        
+        fetch('{{ url_for("admin.performance_batch") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(batchData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                setTimeout(() => {
+                    window.location.href = '{{ url_for("admin.performance") }}?date=' + date;
+                }, 1500);
+            } else {
+                showToast(data.message, 'danger');
+            }
+        })
+        .catch(error => {
+            showToast('提交失败：' + error, 'danger');
+        });
+    }
+</script>
+{% endblock %}
+
+
+

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}通知中心 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div class="flex-between mb-24">
+    <div>
+        <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900);">
+            🔔 通知中心
+        </h1>
+        <p style="color: var(--gray-600); margin-top: var(--space-8);">
+            共 {{ notifications|length }} 条通知，{{ unread_count }} 条未读
+        </p>
+    </div>
+    <button class="btn btn-secondary" onclick="markAllRead()">全部标记为已读</button>
+</div>
+
+<div class="card">
+    <div class="card-body" style="padding: 0;">
+        {% if notifications %}
+            {% for notif in notifications %}
+            <div class="notification-item {% if not notif.is_read %}unread{% endif %}" data-id="{{ notif.id }}" style="padding: var(--space-16) var(--space-24); border-bottom: 1px solid var(--gray-200); {% if not notif.is_read %}background: rgba(37, 99, 235, 0.05);{% endif %}">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div style="flex: 1;">
+                        <div style="display: flex; align-items: center; gap: var(--space-8); margin-bottom: var(--space-8);">
+                            {% if notif.type == 'status_change' %}
+                                <span style="font-size: 20px;">🔄</span>
+                            {% elif notif.type == 'salary' %}
+                                <span style="font-size: 20px;">💰</span>
+                            {% elif notif.type == 'performance' %}
+                                <span style="font-size: 20px;">📈</span>
+                            {% elif notif.type == 'dispute' %}
+                                <span style="font-size: 20px;">💬</span>
+                            {% elif notif.type == 'announcement' %}
+                                <span style="font-size: 20px;">📢</span>
+                            {% else %}
+                                <span style="font-size: 20px;">🔔</span>
+                            {% endif %}
+                            <h3 style="font-size: 16px; font-weight: 600; color: var(--gray-900); margin: 0;">
+                                {{ notif.title }}
+                            </h3>
+                            {% if not notif.is_read %}
+                                <span class="badge badge-danger" style="font-size: 10px;">NEW</span>
+                            {% endif %}
+                        </div>
+                        <p style="color: var(--gray-700); margin-bottom: var(--space-8); line-height: 1.6;">
+                            {{ notif.content }}
+                        </p>
+                        <div style="font-size: 12px; color: var(--gray-500);">
+                            {{ notif.created_at }}
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: var(--space-8); margin-left: var(--space-16);">
+                        {% if not notif.is_read %}
+                            <button class="btn btn-sm btn-secondary" onclick="markRead({{ notif.id }})">标记已读</button>
+                        {% endif %}
+                        <button class="btn btn-sm btn-danger" onclick="deleteNotif({{ notif.id }})">删除</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div style="text-align: center; padding: var(--space-48); color: var(--gray-500);">
+                <div style="font-size: 64px; margin-bottom: var(--space-16);">📭</div>
+                <p>暂无通知</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function markRead(notifId) {
+        fetch(`/notifications/api/read/${notifId}`, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const item = document.querySelector(`[data-id="${notifId}"]`);
+                    item.classList.remove('unread');
+                    item.style.background = 'white';
+                    item.querySelector('.badge-danger')?.remove();
+                    item.querySelector('.btn-secondary')?.remove();
+                    updateNotificationCount();
+                }
+            });
+    }
+
+    function markAllRead() {
+        fetch('/notifications/api/read_all', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('已全部标记为已读', 'success');
+                    setTimeout(() => location.reload(), 1000);
+                }
+            });
+    }
+
+    function deleteNotif(notifId) {
+        if (!confirmAction('确定要删除这条通知吗？')) return;
+        
+        fetch(`/notifications/api/delete/${notifId}`, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const item = document.querySelector(`[data-id="${notifId}"]`);
+                    item.style.transition = 'opacity 0.3s';
+                    item.style.opacity = '0';
+                    setTimeout(() => {
+                        item.remove();
+                        updateNotificationCount();
+                    }, 300);
+                }
+            });
+    }
+</script>
+{% endblock %}
+
+
+

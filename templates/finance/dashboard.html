@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}财务工作台 - 呼叫中心管理系统{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>💳 财务工作台</h1>
+</div>
+<div style="margin-bottom: var(--space-24);">
+    <form method="GET">
+        <input type="month" name="year_month" value="{{ year_month }}" class="form-input" onchange="this.form.submit()">
+    </form>
+</div>
+<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-16); margin-bottom: var(--space-24);">
+    {% for status, data in status_stats.items() %}
+    <div class="card">
+        <div class="card-body" style="text-align: center;">
+            <div style="color: var(--gray-600);">{{ status }}</div>
+            <div style="font-size: 24px; font-weight: bold;">{{ data.count }}</div>
+            <div style="font-size: 14px; color: var(--gray-600);">¥{{ "%.2f"|format(data.amount) }}</div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="card" style="margin-bottom: var(--space-24);">
+    <div class="card-header">
+        <h2>待确认工资单</h2>
+        <button class="btn btn-success" onclick="batchConfirm()">批量确认</button>
+    </div>
+    <div class="card-body">
+        {% if pending_payrolls %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="selectAll"></th>
+                    <th>工号</th><th>姓名</th><th>应发</th><th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in pending_payrolls %}
+                <tr>
+                    <td><input type="checkbox" class="pay-check" value="{{ p.id }}"></td>
+                    <td>{{ p.employee_no }}</td>
+                    <td>{{ p.employee_name }}</td>
+                    <td>¥{{ "%.2f"|format(p.total_salary) }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('finance.confirm_payroll', payroll_id=p.id) }}" style="display: inline;">
+                            <button type="submit" class="btn btn-sm btn-success">确认</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state"><p>无待确认</p></div>
+        {% endif %}
+    </div>
+</div>
+<div class="card">
+    <div class="card-header"><h2>已确认待发放</h2></div>
+    <div class="card-body">
+        {% if confirmed_payrolls %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>工号</th><th>姓名</th><th>应发</th><th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in confirmed_payrolls %}
+                <tr>
+                    <td>{{ p.employee_no }}</td>
+                    <td>{{ p.employee_name }}</td>
+                    <td>¥{{ "%.2f"|format(p.total_salary) }}</td>
+                    <td>
+                        <a href="{{ url_for('finance.payment', payroll_id=p.id) }}" class="btn btn-sm btn-primary">发放</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state"><p>无待发放</p></div>
+        {% endif %}
+    </div>
+</div>
+<script>
+function batchConfirm() {
+    if(confirm('确认批量确认吗？')) {
+        window.location = '{{ url_for("finance.batch_confirm") }}?year_month={{ year_month }}';
+    }
+}
+</script>
+{% endblock %}

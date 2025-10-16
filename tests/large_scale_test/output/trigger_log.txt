@@ -1,0 +1,1812 @@
+[
+  {
+    "date": "2025-01-01",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-01",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-02",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-02",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-03",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-03",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-04",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-04",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-05",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-05",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-06",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-06",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-07",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-07",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-08",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-08",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-09",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-09",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-10",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-10",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-11",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-11",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-12",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-12",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-13",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-13",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-14",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-14",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-15",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-15",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-16",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-16",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-17",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-17",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-18",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-18",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-19",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-19",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-20",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-20",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-21",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-21",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-22",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-22",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-23",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-23",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-24",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-24",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-25",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-25",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-26",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-26",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-27",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-27",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-28",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-28",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-29",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-29",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-30",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-30",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-31",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-01-31",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-01",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-01",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-02",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-02",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-03",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-03",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-04",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-04",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-05",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-05",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-06",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-06",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-07",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-07",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-08",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-08",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-09",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-09",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-10",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-10",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-11",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-11",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-12",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-12",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-13",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-13",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-14",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-14",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-15",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-15",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-16",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-16",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-17",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-17",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-18",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-18",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-19",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-19",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-20",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-20",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-21",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-21",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-22",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-22",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-23",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-23",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-24",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-24",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-25",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-25",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-26",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-26",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-27",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-27",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-28",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-02-28",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-01",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-01",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-02",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-02",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-03",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-03",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-04",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-04",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-05",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-05",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-06",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-06",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-07",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-07",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-08",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-08",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-09",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-09",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-10",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-10",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-11",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-11",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-12",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-12",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-13",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-13",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-14",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-14",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-15",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-15",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-16",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-16",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-17",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-17",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-18",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-18",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-19",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-19",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-20",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-20",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-21",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-21",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-22",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-22",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-23",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-23",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-24",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-24",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-25",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-25",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-26",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-26",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-27",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-27",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-28",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-28",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-29",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-29",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-30",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-30",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-31",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-03-31",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-01",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-01",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-02",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-02",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-03",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-03",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-04",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-04",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-05",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-05",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-06",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-06",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-07",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-07",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-08",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-08",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-09",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-09",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-10",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-10",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-11",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-11",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-12",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-12",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-13",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-13",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-14",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-14",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-15",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-15",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-16",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-16",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-17",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-17",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-18",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-18",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-19",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-19",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-20",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-20",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-21",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-21",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-22",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-22",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-23",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-23",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-24",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-24",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-25",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-25",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-26",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-26",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-27",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-27",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-28",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-28",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-29",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-29",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-30",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-04-30",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-01",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-01",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-02",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-02",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-03",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-03",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-04",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-04",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-05",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-05",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-06",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-06",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-07",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-07",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-08",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-08",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-09",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-09",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-10",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-10",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-11",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-11",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-12",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-12",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-13",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-13",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-14",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-14",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-15",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-15",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-16",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-16",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-17",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-17",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-18",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-18",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-19",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-19",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-20",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-20",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-21",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-21",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-22",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-22",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-23",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-23",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-24",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-24",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-25",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-25",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-26",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-26",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-27",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-27",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-28",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-28",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-29",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-29",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-30",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-30",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-31",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-05-31",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-01",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-01",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-02",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-02",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-03",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-03",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-04",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-04",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-05",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-05",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-06",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-06",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-07",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-07",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-08",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-08",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-09",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-09",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-10",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-10",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-11",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-11",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-12",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-12",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-13",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-13",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-14",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-14",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-15",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-15",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-16",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-16",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-17",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-17",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-18",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-18",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-19",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-19",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-20",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-20",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-21",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-21",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-22",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-22",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-23",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-23",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-24",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-24",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-25",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-25",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-26",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-26",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-27",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-27",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-28",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-28",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-29",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-29",
+    "type": "challenge_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-30",
+    "type": "promotion_check",
+    "action": "executed"
+  },
+  {
+    "date": "2025-06-30",
+    "type": "challenge_check",
+    "action": "executed"
+  }
+]

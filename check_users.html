@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户账号检查</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .success {
+            color: #28a745;
+        }
+        .error {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🔍 用户账号检查工具</h1>
+        <p>点击下方按钮检查和修复用户账号</p>
+        
+        <button onclick="checkUsers()">检查当前用户</button>
+        <button onclick="fixUsers()">紧急修复用户</button>
+        <button onclick="testLogin()">测试登录</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function checkUsers() {
+            document.getElementById('result').innerHTML = '正在检查...';
+            fetch('/api/check_users')
+                .then(r => r.json())
+                .then(data => {
+                    let html = '<div class="success">✓ 检查完成</div>\n\n';
+                    html += `用户数量: ${data.count}\n\n`;
+                    html += '账号列表:\n';
+                    data.users.forEach(u => {
+                        html += `  ${u.username} (${u.role})\n`;
+                    });
+                    document.getElementById('result').innerHTML = html;
+                })
+                .catch(e => {
+                    document.getElementById('result').innerHTML = 
+                        `<div class="error">✗ 错误: ${e.message}</div>`;
+                });
+        }
+
+        function fixUsers() {
+            if (!confirm('确定要重新创建所有用户账号吗？')) return;
+            
+            document.getElementById('result').innerHTML = '正在修复...';
+            fetch('/api/fix_users', {method: 'POST'})
+                .then(r => r.json())
+                .then(data => {
+                    let html = '<div class="success">✓ 修复完成</div>\n\n';
+                    html += `创建了 ${data.count} 个账号\n\n`;
+                    html += '所有账号密码: 123456\n\n';
+                    html += '账号列表:\n';
+                    data.accounts.forEach(a => {
+                        html += `  ${a}\n`;
+                    });
+                    document.getElementById('result').innerHTML = html;
+                })
+                .catch(e => {
+                    document.getElementById('result').innerHTML = 
+                        `<div class="error">✗ 错误: ${e.message}</div>`;
+                });
+        }
+
+        function testLogin() {
+            document.getElementById('result').innerHTML = '正在测试登录...';
+            fetch('/api/test_login')
+                .then(r => r.json())
+                .then(data => {
+                    let html = '<div class="success">✓ 测试完成</div>\n\n';
+                    html += '登录测试结果:\n\n';
+                    data.results.forEach(r => {
+                        const icon = r.success ? '✓' : '✗';
+                        const color = r.success ? 'success' : 'error';
+                        html += `<span class="${color}">${icon} ${r.username}</span>\n`;
+                    });
+                    document.getElementById('result').innerHTML = html;
+                })
+                .catch(e => {
+                    document.getElementById('result').innerHTML = 
+                        `<div class="error">✗ 错误: ${e.message}</div>`;
+                });
+        }
+    </script>
+</body>
+</html>
+
+
+
+

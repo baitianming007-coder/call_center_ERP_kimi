@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+
+{% block title %}薪资统计 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<!-- 面包屑导航 -->
+<nav class="breadcrumb" style="margin-bottom: var(--space-16);">
+    <a href="{{ url_for('admin.dashboard') }}">首页</a>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">薪资统计</span>
+</nav>
+
+<div class="flex-between mb-24">
+    <div>
+        <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900); margin-bottom: var(--space-8);">
+            💰 薪资统计
+        </h1>
+        <p style="color: var(--gray-600);">{{ year_month }} · 共 {{ salary_list|length }} 名员工</p>
+    </div>
+    <a href="{{ url_for('export.export_salary_excel', year_month=year_month) }}" class="btn btn-success">📥 导出Excel</a>
+</div>
+
+<!-- 筛选栏 -->
+<div class="card mb-24">
+    <div class="card-body">
+        <form method="GET" id="salarySearchForm">
+            <!-- 第一行：月份查询 -->
+            <div style="display: flex; gap: var(--space-16); margin-bottom: var(--space-16);">
+                <div class="form-group" style="flex: 1; margin: 0;">
+                    <label class="form-label">选择月份</label>
+                    <input type="month" name="year_month" id="yearMonth" class="form-input" value="{{ year_month }}">
+                </div>
+                
+                <div class="form-group" style="flex: 2; margin: 0;">
+                    <label class="form-label">快捷选择</label>
+                    <div style="display: flex; gap: var(--space-8);">
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="setQuickMonth('current')">本月</button>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="setQuickMonth('last')">上月</button>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="setQuickMonth('last2')">上上月</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第二行：团队和员工查询 -->
+            <div style="display: flex; gap: var(--space-16); margin-bottom: var(--space-16);">
+                <div class="form-group" style="flex: 1; margin: 0;">
+                    <label class="form-label">团队</label>
+                    <select name="team" id="teamSelect" class="form-select" onchange="filterEmployees()">
+                        <option value="">全部团队</option>
+                        <option value="A组" {% if filter_team == 'A组' %}selected{% endif %}>A组</option>
+                        <option value="B组" {% if filter_team == 'B组' %}selected{% endif %}>B组</option>
+                        <option value="C组" {% if filter_team == 'C组' %}selected{% endif %}>C组</option>
+                        <option value="D组" {% if filter_team == 'D组' %}selected{% endif %}>D组</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" style="flex: 3; margin: 0;">
+                    <label class="form-label">员工搜索（工号/姓名）</label>
+                    <input type="text" id="employeeSearch" class="form-input" placeholder="输入工号或姓名搜索员工..." onkeyup="searchEmployee()" autocomplete="off">
+                    <input type="hidden" name="employee" id="employeeId" value="{{ filter_employee or '' }}">
+                    <div id="employeeDropdown" style="display: none; position: absolute; z-index: 100; background: white; border: 1px solid var(--gray-300); border-radius: var(--radius-md); margin-top: 4px; max-height: 300px; overflow-y: auto; box-shadow: var(--shadow-lg); min-width: 400px;"></div>
+                </div>
+                
+                <div class="form-group" style="flex: 1; margin: 0;">
+                    <label class="form-label">状态</label>
+                    <select name="status" class="form-select">
+                        <option value="">全部状态</option>
+                        <option value="trainee" {% if filter_status == 'trainee' %}selected{% endif %}>培训期</option>
+                        <option value="C" {% if filter_status == 'C' %}selected{% endif %}>C级</option>
+                        <option value="B" {% if filter_status == 'B' %}selected{% endif %}>B级</option>
+                        <option value="A" {% if filter_status == 'A' %}selected{% endif %}>A级</option>
+                        <option value="eliminated" {% if filter_status == 'eliminated' %}selected{% endif %}>已淘汰</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- 第三行：操作按钮 -->
+            <div style="display: flex; gap: var(--space-12); justify-content: flex-end;">
+                <a href="{{ url_for('admin.salary') }}" class="btn btn-secondary">🔄 重置</a>
+                <button type="submit" class="btn btn-primary" style="min-width: 120px;">🔍 查询</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 统计摘要 -->
+<div class="grid grid-cols-3 mb-24">
+    <div class="stat-card">
+        <div class="stat-label">总薪资</div>
+        <div class="stat-value" style="color: var(--color-primary); font-size: 28px;">
+            {{ total_salary | format_currency }}
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">固定薪资总计</div>
+        <div class="stat-value" style="color: var(--color-info); font-size: 24px;">
+            {{ total_base | format_currency }}
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">提成总计</div>
+        <div class="stat-value" style="color: var(--color-success); font-size: 24px;">
+            {{ total_commission | format_currency }}
+        </div>
+    </div>
+</div>
+
+<!-- 薪资列表 -->
+<div class="card">
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>工号</th>
+                    <th>姓名</th>
+                    <th>团队</th>
+                    <th>状态</th>
+                    <th>底薪/固定</th>
+                    <th>全勤奖</th>
+                    <th>绩效奖</th>
+                    <th>提成</th>
+                    <th style="text-align: right;">总计</th>
+                    <th style="text-align: center;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if salary_list %}
+                    {% for sal in salary_list %}
+                    <tr>
+                        <td><strong>{{ sal.employee_no }}</strong></td>
+                        <td>{{ sal.name }}</td>
+                        <td>{{ sal.team }}</td>
+                        <td>
+                            <span class="badge badge-{{ sal.status }}">{{ sal.status | status_label }}</span>
+                        </td>
+                        <td>{{ sal.base_salary | format_currency }}</td>
+                        <td>{{ sal.attendance_bonus | format_currency }}</td>
+                        <td>{{ sal.performance_bonus | format_currency }}</td>
+                        <td style="color: var(--color-success); font-weight: 600;">{{ sal.commission | format_currency }}</td>
+                        <td style="text-align: right; font-weight: 700; color: var(--color-primary); font-size: 16px;">
+                            {{ sal.total_salary | format_currency }}
+                        </td>
+                        <td class="actions">
+                            <button class="btn btn-sm btn-secondary" onclick="showDetail('{{ sal.name }}', `{{ sal.calculation_detail }}`)">
+                                查看明细
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="10" style="text-align: center; padding: var(--space-48); color: var(--gray-500);">
+                            该月份暂无薪资数据
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 明细弹窗 -->
+<div id="detailModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: white; border-radius: var(--radius-md); max-width: 600px; width: 90%; max-height: 80vh; overflow: auto;">
+        <div style="padding: var(--space-24); border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center;">
+            <h3 id="detailTitle" style="font-size: 18px; font-weight: 600; margin: 0;">薪资计算明细</h3>
+            <button onclick="closeDetail()" style="border: none; background: none; font-size: 24px; cursor: pointer; color: var(--gray-600);">&times;</button>
+        </div>
+        <div style="padding: var(--space-24);">
+            <pre id="detailContent" style="white-space: pre-line; line-height: 1.8; color: var(--gray-700); font-size: 14px;"></pre>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 所有员工数据
+    const allEmployees = {{ all_employees | tojson }};
+    let filteredEmployees = allEmployees;
+    
+    // 页面加载时恢复已选择的员工
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectedId = document.getElementById('employeeId').value;
+        if (selectedId) {
+            const employee = allEmployees.find(e => e.id == selectedId);
+            if (employee) {
+                document.getElementById('employeeSearch').value = employee.employee_no + ' - ' + employee.name;
+            }
+        }
+    });
+    
+    // 快捷月份选择
+    function setQuickMonth(type) {
+        const today = new Date();
+        let year = today.getFullYear();
+        let month = today.getMonth() + 1;
+        
+        if (type === 'last') {
+            month -= 1;
+            if (month < 1) {
+                month = 12;
+                year -= 1;
+            }
+        } else if (type === 'last2') {
+            month -= 2;
+            if (month < 1) {
+                month += 12;
+                year -= 1;
+            }
+        }
+        
+        const monthStr = String(month).padStart(2, '0');
+        document.getElementById('yearMonth').value = `${year}-${monthStr}`;
+    }
+    
+    // 根据团队筛选员工
+    function filterEmployees() {
+        const team = document.getElementById('teamSelect').value;
+        if (team) {
+            filteredEmployees = allEmployees.filter(e => e.team === team);
+        } else {
+            filteredEmployees = allEmployees;
+        }
+        
+        // 清空员工搜索
+        document.getElementById('employeeSearch').value = '';
+        document.getElementById('employeeId').value = '';
+        document.getElementById('employeeDropdown').style.display = 'none';
+    }
+    
+    // 搜索员工
+    function searchEmployee() {
+        const searchText = document.getElementById('employeeSearch').value.toLowerCase();
+        const dropdown = document.getElementById('employeeDropdown');
+        
+        if (searchText.length < 1) {
+            dropdown.style.display = 'none';
+            document.getElementById('employeeId').value = '';
+            return;
+        }
+        
+        // 搜索匹配
+        const matches = filteredEmployees.filter(emp => 
+            emp.employee_no.toLowerCase().includes(searchText) || 
+            emp.name.toLowerCase().includes(searchText)
+        ).slice(0, 50); // 最多显示50个结果
+        
+        if (matches.length === 0) {
+            dropdown.innerHTML = '<div style="padding: var(--space-12); color: var(--gray-500); text-align: center;">未找到匹配的员工</div>';
+            dropdown.style.display = 'block';
+            return;
+        }
+        
+        // 渲染下拉列表
+        dropdown.innerHTML = matches.map(emp => `
+            <div class="employee-option" onclick="selectEmployee(${emp.id}, '${emp.employee_no}', '${emp.name}')" 
+                 style="padding: var(--space-12); cursor: pointer; border-bottom: 1px solid var(--gray-100); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong style="color: var(--color-primary);">${emp.employee_no}</strong> - ${emp.name}
+                </div>
+                <span style="color: var(--gray-500); font-size: 12px;">${emp.team} · ${emp.status}</span>
+            </div>
+        `).join('');
+        
+        dropdown.style.display = 'block';
+        
+        // 鼠标悬停效果
+        const options = dropdown.querySelectorAll('.employee-option');
+        options.forEach(opt => {
+            opt.addEventListener('mouseenter', function() {
+                this.style.background = 'var(--gray-50)';
+            });
+            opt.addEventListener('mouseleave', function() {
+                this.style.background = 'white';
+            });
+        });
+    }
+    
+    // 选择员工
+    function selectEmployee(id, no, name) {
+        document.getElementById('employeeId').value = id;
+        document.getElementById('employeeSearch').value = no + ' - ' + name;
+        document.getElementById('employeeDropdown').style.display = 'none';
+    }
+    
+    // 点击外部关闭下拉框
+    document.addEventListener('click', function(e) {
+        const search = document.getElementById('employeeSearch');
+        const dropdown = document.getElementById('employeeDropdown');
+        if (e.target !== search && e.target !== dropdown && !dropdown.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+    
+    // 薪资明细弹窗
+    function showDetail(name, detail) {
+        document.getElementById('detailTitle').textContent = name + ' 的薪资计算明细';
+        document.getElementById('detailContent').textContent = detail;
+        document.getElementById('detailModal').style.display = 'flex';
+    }
+    
+    function closeDetail() {
+        document.getElementById('detailModal').style.display = 'none';
+    }
+    
+    document.getElementById('detailModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeDetail();
+        }
+    });
+</script>
+{% endblock %}
+

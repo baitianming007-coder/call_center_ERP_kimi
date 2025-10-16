@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}工资发放 - 呼叫中心管理系统{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>💳 工资发放</h1>
+</div>
+<div class="card">
+    <div class="card-header"><h2>员工：{{ payroll.employee_name }} ({{ payroll.employee_no }})</h2></div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="form-group">
+                <label>应发金额</label>
+                <input type="text" value="¥{{ '%.2f'|format(payroll.total_salary) }}" class="form-input" readonly>
+            </div>
+            <div class="form-group">
+                <label>银行信息</label>
+                <div style="padding: var(--space-12); background: var(--gray-100); border-radius: var(--radius-md);">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>卡号：<span id="bankAccount">{{ employee.bank_account_number or '未录入' }}</span></span>
+                        {% if employee.bank_account_number %}
+                        <button type="button" class="btn btn-sm btn-secondary copy-btn" onclick="copyBankAccount('{{ employee.bank_account_number }}')">
+                            📋 复制
+                        </button>
+                        {% endif %}
+                    </div>
+                    <div>开户行：{{ employee.bank_name or '未录入' }}</div>
+                    <div>户名：{{ employee.account_holder_name or '未录入' }}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>发放方式 *</label>
+                <select name="payment_method" class="form-select" required>
+                    <option value="">请选择</option>
+                    {% if employee.account_holder_name == employee.name %}
+                    <option value="bank_transfer">银行转账</option>
+                    {% endif %}
+                    <option value="cash">现金</option>
+                    <option value="other">其他</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>发放日期 *</label>
+                <input type="date" name="payment_date" class="form-input" value="{{ now.strftime('%Y-%m-%d') }}" required>
+            </div>
+            <div class="form-group">
+                <label>转账凭证号</label>
+                <input type="text" name="payment_reference" class="form-input">
+            </div>
+            <div class="form-group">
+                <label>备注</label>
+                <textarea name="notes" class="form-input" rows="3"></textarea>
+            </div>
+            <div style="display: flex; gap: var(--space-12);">
+                <button type="submit" class="btn btn-success">确认发放</button>
+                <a href="{{ url_for('finance.dashboard') }}" class="btn btn-secondary">返回</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// P2-11: 银行卡号一键复制功能
+function copyBankAccount(bankAccount) {
+    if (!bankAccount) {
+        showToast('没有可复制的银行卡号', 'warning');
+        return;
+    }
+    
+    // 使用现代Clipboard API
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(bankAccount).then(() => {
+            showToast('银行卡号已复制：' + bankAccount, 'success');
+            // 高亮复制按钮
+            event.target.innerHTML = '✓ 已复制';
+            setTimeout(() => {
+                event.target.innerHTML = '📋 复制';
+            }, 2000);
+        }).catch(err => {
+            fallbackCopy(bankAccount);
+        });
+    } else {
+        // 降级方案：使用传统方式
+        fallbackCopy(bankAccount);
+    }
+}
+
+// 降级复制方案
+function fallbackCopy(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.select();
+    
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showToast('银行卡号已复制：' + text, 'success');
+        } else {
+            showToast('复制失败，请手动复制', 'danger');
+        }
+    } catch (err) {
+        showToast('复制失败，请手动复制', 'danger');
+    }
+    
+    document.body.removeChild(textArea);
+}
+</script>
+{% endblock %}

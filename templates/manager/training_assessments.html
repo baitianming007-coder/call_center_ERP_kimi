@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}培训考核管理 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📚 培训考核管理</h1>
+    <p style="color: var(--gray-600); margin-top: var(--space-8);">录入员工培训考核结果</p>
+</div>
+
+<!-- 培训期员工列表 -->
+<div class="card" style="margin-bottom: var(--space-24);">
+    <div class="card-header">
+        <h2>培训期员工</h2>
+    </div>
+    <div class="card-body">
+        {% if trainees %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>工号</th>
+                    <th>姓名</th>
+                    <th>团队</th>
+                    <th>入职日期</th>
+                    <th>在职天数</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in trainees %}
+                <tr>
+                    <td>{{ employee.employee_no }}</td>
+                    <td>{{ employee.name }}</td>
+                    <td><span class="badge badge-info">{{ employee.team }}</span></td>
+                    <td>{{ employee.join_date }}</td>
+                    <td>{{ (now.date() - employee.join_date|default(now.date()))|abs if employee.join_date else 0 }}天</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="openAssessmentModal({{ employee.id }}, '{{ employee.employee_no }}', '{{ employee.name }}')">
+                            录入考核
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <p>暂无培训期员工</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 考核记录 -->
+<div class="card">
+    <div class="card-header">
+        <h2>考核记录</h2>
+    </div>
+    <div class="card-body">
+        {% if assessments %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>工号</th>
+                    <th>姓名</th>
+                    <th>团队</th>
+                    <th>考核日期</th>
+                    <th>话术测试</th>
+                    <th>模拟出单</th>
+                    <th>综合结果</th>
+                    <th>录入人</th>
+                    <th>备注</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for assessment in assessments %}
+                <tr>
+                    <td>{{ assessment.employee_no }}</td>
+                    <td>{{ assessment.employee_name }}</td>
+                    <td><span class="badge badge-info">{{ assessment.team }}</span></td>
+                    <td>{{ assessment.assessment_date }}</td>
+                    <td>
+                        {% if assessment.script_test_result == 'passed' %}
+                        <span class="badge badge-success">✓ 通过</span>
+                        {% else %}
+                        <span class="badge badge-danger">✗ 未通过</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if assessment.mock_order_result == 'passed' %}
+                        <span class="badge badge-success">✓ 通过</span>
+                        {% else %}
+                        <span class="badge badge-danger">✗ 未通过</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if assessment.both_passed == 1 %}
+                        <span class="badge badge-success">✓ 全部通过</span>
+                        {% else %}
+                        <span class="badge badge-warning">部分通过</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ assessment.recorder_name }}</td>
+                    <td>{{ assessment.notes or '-' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <p>暂无考核记录</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 考核录入弹窗 -->
+<div id="assessmentModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>录入培训考核结果</h3>
+            <button class="modal-close" onclick="closeAssessmentModal()">&times;</button>
+        </div>
+        <form method="POST" action="{{ url_for('manager.record_assessment') }}">
+            <div class="modal-body">
+                <input type="hidden" name="employee_id" id="employee_id">
+                
+                <div class="form-group">
+                    <label class="form-label">员工</label>
+                    <input type="text" id="employee_info" class="form-input" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">基础话术测试 <span style="color: var(--color-danger);">*</span></label>
+                    <select name="script_result" class="form-select" required>
+                        <option value="">请选择</option>
+                        <option value="passed">✓ 通过</option>
+                        <option value="failed">✗ 未通过</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">模拟出单测试 <span style="color: var(--color-danger);">*</span></label>
+                    <select name="mock_result" class="form-select" required>
+                        <option value="">请选择</option>
+                        <option value="passed">✓ 通过</option>
+                        <option value="failed">✗ 未通过</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">备注</label>
+                    <textarea name="notes" class="form-input" rows="3" placeholder="可选填写考核备注"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeAssessmentModal()">取消</button>
+                <button type="submit" class="btn btn-primary">提交考核</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openAssessmentModal(employeeId, employeeNo, employeeName) {
+    document.getElementById('employee_id').value = employeeId;
+    document.getElementById('employee_info').value = `${employeeNo} - ${employeeName}`;
+    document.getElementById('assessmentModal').style.display = 'flex';
+}
+
+function closeAssessmentModal() {
+    document.getElementById('assessmentModal').style.display = 'none';
+}
+
+// 点击模态框外部关闭
+document.getElementById('assessmentModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeAssessmentModal();
+    }
+});
+</script>
+{% endblock %}
+
+
+

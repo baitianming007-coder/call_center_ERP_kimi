@@ -1,0 +1,336 @@
+2025-10-16 12:16:45 - INFO - ======================================================================
+2025-10-16 12:16:45 - INFO - 开始触发业务逻辑
+2025-10-16 12:16:45 - INFO - ======================================================================
+2025-10-16 12:16:45 - INFO - 检查实习生转正条件...
+2025-10-16 12:16:45 - INFO -   找到 300 名实习生
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST001 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST002 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST003 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST005 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST006 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST007 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST008 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST009 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST010 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST011 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST012 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST013 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST014 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST015 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST016 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST017 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST018 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST019 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST020 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST021 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST022 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST023 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST024 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST025 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST026 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST027 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST028 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST029 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST030 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST031 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST032 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST033 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST034 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST035 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST036 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST037 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST038 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST039 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST040 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST041 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST042 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST043 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST045 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST046 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST047 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST048 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST049 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST050 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST051 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST052 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST053 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST054 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST055 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST056 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST057 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST058 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST059 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST060 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST061 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST062 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST063 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST064 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST065 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST066 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST067 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST068 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST069 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST070 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST071 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST072 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST073 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST074 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST075 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST076 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST077 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST078 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST079 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST080 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST081 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST082 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST083 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST084 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST085 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST086 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST087 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST088 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST089 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST090 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST091 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST092 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST093 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST094 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST095 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST096 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST097 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST098 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST099 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST100 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST102 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST103 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST104 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST105 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST106 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST107 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST108 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST109 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST110 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST111 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST112 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST113 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST114 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST115 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST116 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST117 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST118 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST119 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST120 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST121 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST122 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST123 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST124 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST125 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST126 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST127 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST128 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST129 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST130 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST131 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST132 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST133 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST134 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST135 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST136 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST137 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST138 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST139 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST140 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST141 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST142 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST143 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST144 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST145 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST146 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST147 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST148 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST149 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST150 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST151 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST152 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST153 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST154 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST155 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST156 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST157 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST158 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST159 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST160 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST161 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST162 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST163 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST164 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST166 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST167 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST168 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST169 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST170 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST171 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST172 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST173 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST174 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST175 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST176 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST177 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST178 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST179 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST180 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST181 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST182 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST183 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST184 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST185 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST186 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST187 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST188 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST189 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST190 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST191 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST192 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST193 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST194 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST195 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST196 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST197 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST198 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST199 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST200 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST201 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST202 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST203 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST204 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST205 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST207 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST208 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST209 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST211 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST212 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST213 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST214 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST215 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST216 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST217 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST218 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST219 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST220 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST221 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST222 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST223 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST224 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST227 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST228 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST229 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST230 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST231 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST232 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST233 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST234 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST235 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST236 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST237 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST238 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST239 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST241 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST242 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST243 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST244 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST245 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST246 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST247 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST248 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST249 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST250 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST251 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST252 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST253 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST254 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST255 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST256 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST257 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST258 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST259 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST260 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST262 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST263 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST265 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST266 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST267 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST268 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST269 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST270 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST272 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST273 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST275 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST276 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST277 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST279 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST280 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST281 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST282 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST283 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST284 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST285 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST286 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST287 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST288 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST289 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST290 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST291 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST293 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST294 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST295 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST296 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST297 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST298 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST299 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - ERROR -   处理员工 TEST300 时出错: table promotion_confirmations has no column named promotion_date
+2025-10-16 12:16:45 - INFO - ✓ 转正检查完成: 0 人转正, 285 人失败
+2025-10-16 12:16:45 - INFO - 检查C级晋升B级...
+2025-10-16 12:16:45 - INFO -   找到 0 名C级员工
+2025-10-16 12:16:45 - INFO - ✓ C→B晋升检查完成: 0 人晋升
+2025-10-16 12:16:45 - INFO - 检查B级晋升A级...
+2025-10-16 12:16:45 - INFO -   找到 0 名B级员工
+2025-10-16 12:16:45 - INFO - ✓ B→A晋升检查完成: 0 人晋升
+2025-10-16 12:16:45 - INFO - 检查A级保级挑战...
+2025-10-16 12:16:45 - INFO -   找到 0 名A级员工
+2025-10-16 12:16:45 - INFO - ✓ A级保级检查完成: 0 人触发挑战
+2025-10-16 12:16:45 - INFO - ✓ 结果已保存: /Users/kimi/Desktop/call center 2.0/tests/small_scale_test/output/trigger_results.json
+2025-10-16 12:16:45 - INFO - ✓ 业务逻辑触发完成，耗时: 0.1秒
+2025-10-16 12:18:36 - INFO - ======================================================================
+2025-10-16 12:18:36 - INFO - 开始触发业务逻辑
+2025-10-16 12:18:36 - INFO - ======================================================================
+2025-10-16 12:18:36 - INFO - 检查实习生转正条件...
+2025-10-16 12:18:36 - INFO -   找到 300 名实习生
+2025-10-16 12:18:36 - INFO - ✓ 转正检查完成: 285 人转正, 0 人失败
+2025-10-16 12:18:36 - INFO - 检查C级晋升B级...
+2025-10-16 12:18:36 - INFO -   找到 285 名C级员工
+2025-10-16 12:18:36 - INFO - ✓ C→B晋升检查完成: 149 人晋升
+2025-10-16 12:18:36 - INFO - 检查B级晋升A级...
+2025-10-16 12:18:36 - INFO -   找到 149 名B级员工
+2025-10-16 12:18:36 - INFO - ✓ B→A晋升检查完成: 0 人晋升
+2025-10-16 12:18:36 - INFO - 检查A级保级挑战...
+2025-10-16 12:18:36 - INFO -   找到 0 名A级员工
+2025-10-16 12:18:36 - INFO - ✓ A级保级检查完成: 0 人触发挑战
+2025-10-16 12:18:36 - INFO - ✓ 结果已保存: /Users/kimi/Desktop/call center 2.0/tests/small_scale_test/output/trigger_results.json
+2025-10-16 12:18:36 - INFO - ✓ 业务逻辑触发完成，耗时: 0.1秒
+2025-10-16 12:21:15 - INFO - ======================================================================
+2025-10-16 12:21:15 - INFO - 开始触发业务逻辑
+2025-10-16 12:21:15 - INFO - ======================================================================
+2025-10-16 12:21:15 - INFO - 检查实习生转正条件...
+2025-10-16 12:21:15 - INFO -   找到 300 名实习生
+2025-10-16 12:21:15 - INFO - ✓ 转正检查完成: 285 人转正, 0 人失败
+2025-10-16 12:21:15 - INFO - 检查C级晋升B级...
+2025-10-16 12:21:15 - INFO -   找到 285 名C级员工
+2025-10-16 12:21:15 - INFO - ✓ C→B晋升检查完成: 149 人晋升
+2025-10-16 12:21:15 - INFO - 检查B级晋升A级...
+2025-10-16 12:21:15 - INFO -   找到 149 名B级员工
+2025-10-16 12:21:15 - INFO - ✓ B→A晋升检查完成: 0 人晋升
+2025-10-16 12:21:15 - INFO - 检查A级保级挑战...
+2025-10-16 12:21:15 - INFO -   找到 0 名A级员工
+2025-10-16 12:21:15 - INFO - ✓ A级保级检查完成: 0 人触发挑战
+2025-10-16 12:21:15 - INFO - ✓ 结果已保存: /Users/kimi/Desktop/call center 2.0/tests/small_scale_test/output/trigger_results.json
+2025-10-16 12:21:15 - INFO - ✓ 业务逻辑触发完成，耗时: 0.1秒

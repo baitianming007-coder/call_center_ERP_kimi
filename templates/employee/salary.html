@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}个人薪资 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: var(--space-32);">
+    <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900); margin-bottom: var(--space-8);">
+        个人薪资
+    </h1>
+    <p style="color: var(--gray-600);">
+        {{ employee.name }} ({{ employee.employee_no }}) · {{ employee.team }} · {{ employee.status | status_label }}
+    </p>
+</div>
+
+<!-- 本月薪资（预估）-->
+<div class="card mb-24" style="border-left: 4px solid var(--color-primary);">
+    <div class="card-header">
+        <h3>💰 本月薪资（{{ current_month }}）</h3>
+        <span class="badge badge-warning">预估数据</span>
+    </div>
+    <div class="card-body">
+        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-24); margin-bottom: var(--space-24);">
+            <div>
+                <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 4px;">底薪/固定</div>
+                <div style="font-size: 20px; font-weight: 700; color: var(--gray-900);">
+                    {{ current_salary.base_salary | format_currency }}
+                </div>
+            </div>
+            <div>
+                <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 4px;">全勤奖</div>
+                <div style="font-size: 20px; font-weight: 700; color: var(--color-success);">
+                    {{ current_salary.attendance_bonus | format_currency }}
+                </div>
+            </div>
+            <div>
+                <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 4px;">绩效奖</div>
+                <div style="font-size: 20px; font-weight: 700; color: var(--color-warning);">
+                    {{ current_salary.performance_bonus | format_currency }}
+                </div>
+            </div>
+            <div>
+                <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 4px;">提成</div>
+                <div style="font-size: 20px; font-weight: 700; color: var(--color-info);">
+                    {{ current_salary.commission | format_currency }}
+                </div>
+            </div>
+            <div style="background: var(--gray-50); padding: var(--space-12); border-radius: var(--radius-sm);">
+                <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 4px;">总计</div>
+                <div style="font-size: 24px; font-weight: 700; color: var(--color-primary);">
+                    {{ current_salary.total_salary | format_currency }}
+                </div>
+            </div>
+        </div>
+        
+        <div style="padding: var(--space-16); background: var(--gray-50); border-radius: var(--radius-sm); white-space: pre-line; font-size: 13px; color: var(--gray-700); line-height: 1.8;">{{ current_salary.calculation_detail }}</div>
+    </div>
+</div>
+
+<!-- 历史薪资 -->
+<div class="card">
+    <div class="card-header">
+        <h3>📅 历史薪资（最近6个月）</h3>
+    </div>
+    <div class="card-body">
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>月份</th>
+                        <th>底薪/固定</th>
+                        <th>全勤奖</th>
+                        <th>绩效奖</th>
+                        <th>提成</th>
+                        <th style="text-align: right;">总计</th>
+                        <th style="text-align: center;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for salary in history_salaries %}
+                    <tr>
+                        <td><strong>{{ salary.year_month }}</strong></td>
+                        <td>{{ salary.base_salary | format_currency }}</td>
+                        <td>{{ salary.attendance_bonus | format_currency }}</td>
+                        <td>{{ salary.performance_bonus | format_currency }}</td>
+                        <td>{{ salary.commission | format_currency }}</td>
+                        <td style="text-align: right; font-weight: 600; color: var(--color-primary);">
+                            {{ salary.total_salary | format_currency }}
+                        </td>
+                        <td class="actions">
+                            <button class="btn btn-sm btn-secondary" onclick="showDetail('{{ salary.year_month }}', `{{ salary.calculation_detail }}`)">
+                                查看明细
+                            </button>
+                            <a href="{{ url_for('export.export_salary_pdf', employee_id=employee['id'], year_month=salary.year_month) }}" class="btn btn-sm btn-danger" target="_blank">
+                                PDF
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- 薪资异议记录 -->
+{% if disputes %}
+<div class="card mt-24">
+    <div class="card-header">
+        <h3>💬 异议记录</h3>
+    </div>
+    <div class="card-body">
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>月份</th>
+                        <th>异议原因</th>
+                        <th>状态</th>
+                        <th>管理员回复</th>
+                        <th>提交时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dispute in disputes %}
+                    <tr>
+                        <td>{{ dispute.year_month }}</td>
+                        <td>{{ dispute.reason }}</td>
+                        <td>
+                            {% if dispute.status == 'pending' %}
+                                <span class="badge badge-warning">待处理</span>
+                            {% elif dispute.status == 'approved' %}
+                                <span class="badge badge-success">已通过</span>
+                            {% else %}
+                                <span class="badge badge-danger">已拒绝</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ dispute.response or '-' }}</td>
+                        <td>{{ dispute.created_at }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- 明细弹窗 -->
+<div id="detailModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: white; border-radius: var(--radius-md); max-width: 600px; width: 90%; max-height: 80vh; overflow: auto;">
+        <div style="padding: var(--space-24); border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center;">
+            <h3 id="detailTitle" style="font-size: 18px; font-weight: 600; margin: 0;">薪资计算明细</h3>
+            <button onclick="closeDetail()" style="border: none; background: none; font-size: 24px; cursor: pointer; color: var(--gray-600);">&times;</button>
+        </div>
+        <div style="padding: var(--space-24);">
+            <pre id="detailContent" style="white-space: pre-line; line-height: 1.8; color: var(--gray-700); font-size: 14px;"></pre>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function showDetail(month, detail) {
+        document.getElementById('detailTitle').textContent = month + ' 薪资计算明细';
+        document.getElementById('detailContent').textContent = detail;
+        document.getElementById('detailModal').style.display = 'flex';
+    }
+    
+    function closeDetail() {
+        document.getElementById('detailModal').style.display = 'none';
+    }
+    
+    // 点击遮罩关闭
+    document.getElementById('detailModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeDetail();
+        }
+    });
+</script>
+{% endblock %}
+

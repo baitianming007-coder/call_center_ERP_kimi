@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+{% block title %}工资管理 - 呼叫中心管理系统{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>💰 工资管理</h1>
+</div>
+<div class="card" style="margin-bottom: var(--space-24);">
+    <div class="card-header">
+        <h2>{{ year_month }}月工资单</h2>
+        <form method="GET" style="display: inline-block;">
+            <input type="month" name="year_month" value="{{ year_month }}" class="form-input" onchange="this.form.submit()">
+        </form>
+    </div>
+    <div class="card-body">
+        <div style="margin-bottom: var(--space-16);">
+            <button class="btn btn-primary" onclick="previewPayroll()">🔍 预览工资单</button>
+            <button class="btn btn-success" onclick="exportExcel()">导出Excel</button>
+        </div>
+        <div style="margin-bottom: var(--space-16);">
+            <span>总计：{{ total_count }}人 | 总额：¥{{ "%.2f"|format(total_amount) }}</span>
+        </div>
+        {% if payrolls %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>工号</th><th>姓名</th><th>团队</th><th>应发</th><th>状态</th><th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in payrolls %}
+                <tr>
+                    <td>{{ p.employee_no }}</td>
+                    <td>{{ p.employee_name }}</td>
+                    <td>{{ p.team }}</td>
+                    <td>¥{{ "%.2f"|format(p.total_salary) }}</td>
+                    <td>
+                        {% if p.status == 'pending' %}<span class="badge badge-warning">待确认</span>
+                        {% elif p.status == 'confirmed' %}<span class="badge badge-info">已确认</span>
+                        {% elif p.status == 'paid' %}<span class="badge badge-success">已发放</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-secondary" onclick="adjustPayroll({{ p.id }}, '{{ p.employee_name }}')">调整</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state"><p>暂无工资记录</p></div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 工资单预览模态框 -->
+<div id="previewModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+        <div class="modal-header">
+            <h3>工资单预览 - {{ year_month }}</h3>
+            <button class="modal-close" onclick="closePreviewModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="previewContent">
+                <div style="text-align: center; padding: var(--space-48);">
+                    <div class="spinner"></div>
+                    <p style="color: var(--gray-600); margin-top: var(--space-16);">正在加载预览数据...</p>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closePreviewModal()">取消</button>
+            <button type="button" class="btn btn-primary" onclick="confirmGenerate()">✓ 确认生成</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// 预览工资单
+function previewPayroll() {
+    const modal = document.getElementById('previewModal');
+    const content = document.getElementById('previewContent');
+    
+    modal.style.display = 'flex';
+    
+    // 加载预览数据
+    fetch(`/admin/api/payroll_preview?year_month={{ year_month }}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                renderPreview(data);
+            } else {
+                content.innerHTML = `
+                    <div style="text-align: center; padding: var(--space-48);">
+                        <p style="color: var(--color-danger);">❌ ${data.message || '加载失败'}</p>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            content.innerHTML = `
+                <div style="text-align: center; padding: var(--space-48);">
+                    <p style="color: var(--color-danger);">❌ 加载失败: ${error}</p>
+                </div>
+            `;
+        });
+}
+
+// 渲染预览内容
+function renderPreview(data) {
+    const content = document.getElementById('previewContent');
+    
+    let html = `
+        <!-- 统计信息 -->
+        <div style="background: var(--gray-50); padding: var(--space-20); border-radius: var(--radius-sm); margin-bottom: var(--space-24);">
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-16); text-align: center;">
+                <div>
+                    <div style="font-size: 24px; font-weight: 700; color: var(--color-primary);">${data.total_count}</div>
+                    <div style="color: var(--gray-600); font-size: 13px; margin-top: 4px;">员工人数</div>
+                </div>
+                <div>
+                    <div style="font-size: 24px; font-weight: 700; color: var(--color-success);">¥${data.total_amount.toFixed(2)}</div>
+                    <div style="color: var(--gray-600); font-size: 13px; margin-top: 4px;">工资总额</div>
+                </div>
+                <div>
+                    <div style="font-size: 24px; font-weight: 700; color: var(--color-info);">¥${data.avg_salary.toFixed(2)}</div>
+                    <div style="color: var(--gray-600); font-size: 13px; margin-top: 4px;">平均工资</div>
+                </div>
+                <div>
+                    <div style="font-size: 24px; font-weight: 700; color: var(--color-warning);">¥${data.commission_total.toFixed(2)}</div>
+                    <div style="color: var(--gray-600); font-size: 13px; margin-top: 4px;">提成总额</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 预览提示 -->
+        <div style="background: var(--color-info); color: white; padding: var(--space-12) var(--space-16); border-radius: var(--radius-sm); margin-bottom: var(--space-16); font-size: 14px;">
+            💡 预览显示前10条记录，确认后将生成全部${data.total_count}条工资单
+        </div>
+        
+        <!-- 预览表格 -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>工号</th>
+                    <th>姓名</th>
+                    <th>团队</th>
+                    <th>状态</th>
+                    <th>底薪</th>
+                    <th>全勤</th>
+                    <th>绩效</th>
+                    <th>提成</th>
+                    <th>应发</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+    
+    data.preview.forEach(p => {
+        html += `
+            <tr>
+                <td>${p.employee_no}</td>
+                <td>${p.employee_name}</td>
+                <td>${p.team || '-'}</td>
+                <td><span class="badge badge-${getStatusBadge(p.status_at_time)}">${getStatusLabel(p.status_at_time)}</span></td>
+                <td>¥${p.base_salary.toFixed(2)}</td>
+                <td>¥${p.attendance_bonus.toFixed(2)}</td>
+                <td>¥${p.performance_bonus.toFixed(2)}</td>
+                <td>¥${p.commission.toFixed(2)}</td>
+                <td><strong>¥${p.total_salary.toFixed(2)}</strong></td>
+            </tr>
+        `;
+    });
+    
+    html += `
+            </tbody>
+        </table>
+        
+        ${data.total_count > 10 ? '<p style="text-align: center; color: var(--gray-600); margin-top: var(--space-16);">还有 ' + (data.total_count - 10) + ' 条记录未显示...</p>' : ''}
+    `;
+    
+    content.innerHTML = html;
+}
+
+// 状态标签
+function getStatusLabel(status) {
+    const labels = {'trainee': '培训期', 'C': 'C级', 'B': 'B级', 'A': 'A级', 'eliminated': '已淘汰'};
+    return labels[status] || status;
+}
+
+function getStatusBadge(status) {
+    const badges = {'trainee': 'secondary', 'C': 'warning', 'B': 'info', 'A': 'success', 'eliminated': 'danger'};
+    return badges[status] || 'secondary';
+}
+
+// 关闭预览
+function closePreviewModal() {
+    document.getElementById('previewModal').style.display = 'none';
+}
+
+// 确认生成
+function confirmGenerate() {
+    closePreviewModal();
+    if(confirm('确认生成工资单吗？如已存在将覆盖。')) {
+        document.location = '{{ url_for("admin_ext.generate_payroll") }}?year_month={{ year_month }}&overwrite=1';
+    }
+}
+
+// 点击模态框外部关闭
+document.getElementById('previewModal').addEventListener('click', function(e) {
+    if (e.target === this) closePreviewModal();
+});
+
+function adjustPayroll(id, name) {
+    alert('调整功能请在详情页操作');
+}
+function exportExcel() {
+    alert('导出功能开发中');
+}
+</script>
+
+<style>
+.spinner {
+    border: 3px solid var(--gray-200);
+    border-top: 3px solid var(--color-primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+
+{% endblock %}

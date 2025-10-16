@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}账号管理 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div class="flex-between mb-24">
+    <div>
+        <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900); margin-bottom: var(--space-8);">
+            👤 管理员账号管理
+        </h1>
+        <p style="color: var(--gray-600);">共 {{ managers|length }} 个管理员账号</p>
+    </div>
+    <button class="btn btn-primary" onclick="showAddManager()">+ 添加账号</button>
+</div>
+
+<!-- 账号列表 -->
+<div class="card">
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>用户名</th>
+                    <th>角色</th>
+                    <th>关联员工ID</th>
+                    <th>创建时间</th>
+                    <th style="text-align: right;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for manager in managers %}
+                <tr>
+                    <td><strong>{{ manager.username }}</strong></td>
+                    <td>
+                        {% if manager.role == 'admin' %}
+                            <span class="badge" style="background: rgba(239, 68, 68, 0.15); color: var(--color-danger);">管理员</span>
+                        {% else %}
+                            <span class="badge badge-warning">经理</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ manager.employee_id or '-' }}</td>
+                    <td>{{ manager.created_at }}</td>
+                    <td class="actions">
+                        {% if manager.id != user.id %}
+                            <button class="btn btn-sm btn-danger" onclick="deleteManager({{ manager.id }}, '{{ manager.username }}')">
+                                删除
+                            </button>
+                        {% else %}
+                            <span style="color: var(--gray-400); font-size: 13px;">当前账号</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 添加账号弹窗 -->
+<div id="addManagerModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: white; border-radius: var(--radius-md); max-width: 500px; width: 90%;">
+        <div style="padding: var(--space-24); border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 18px; font-weight: 600; margin: 0;">添加管理员账号</h3>
+            <button onclick="closeAddManager()" style="border: none; background: none; font-size: 24px; cursor: pointer; color: var(--gray-600);">&times;</button>
+        </div>
+        <div style="padding: var(--space-24);">
+            <form id="managerForm" onsubmit="addManager(event)">
+                <div class="form-group">
+                    <label class="form-label required">用户名</label>
+                    <input type="text" id="username" class="form-input" placeholder="登录用户名" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required">密码</label>
+                    <input type="password" id="password" class="form-input" placeholder="初始密码" required minlength="6">
+                    <div style="font-size: 12px; color: var(--gray-500); margin-top: 4px;">密码长度至少6位</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required">角色</label>
+                    <select id="role" class="form-select" required>
+                        <option value="manager">经理（限团队数据）</option>
+                        <option value="admin">管理员（全部数据）</option>
+                    </select>
+                </div>
+                
+                <div style="display: flex; gap: var(--space-12); justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddManager()">取消</button>
+                    <button type="submit" class="btn btn-primary">添加</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function showAddManager() {
+        document.getElementById('addManagerModal').style.display = 'flex';
+        document.getElementById('managerForm').reset();
+    }
+    
+    function closeAddManager() {
+        document.getElementById('addManagerModal').style.display = 'none';
+    }
+    
+    function addManager(event) {
+        event.preventDefault();
+        
+        const formData = new FormData();
+        formData.append('username', document.getElementById('username').value);
+        formData.append('password', document.getElementById('password').value);
+        formData.append('role', document.getElementById('role').value);
+        
+        fetch('{{ url_for("admin.manager_add") }}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(data.message, 'danger');
+            }
+        })
+        .catch(error => {
+            showToast('添加失败：' + error, 'danger');
+        });
+    }
+    
+    function deleteManager(id, username) {
+        if (!confirmAction(`确定要删除管理员账号"${username}"吗？`)) {
+            return;
+        }
+        
+        fetch(`/admin/manager/${id}/delete`, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(data.message, 'danger');
+            }
+        })
+        .catch(error => {
+            showToast('删除失败：' + error, 'danger');
+        });
+    }
+    
+    document.getElementById('addManagerModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeAddManager();
+        }
+    });
+</script>
+{% endblock %}
+
+
+

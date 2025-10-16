@@ -1,0 +1,29 @@
+{
+  "generation_date": "2025-10-16",
+  "employee_count": 30,
+  "employee_types": {
+    "excellent": 10,
+    "normal": 16,
+    "poor": 4
+  },
+  "join_date": "2025-10-02",
+  "trainee_to_c_date": "2025-10-05",
+  "c_to_b_date": "2025-10-09",
+  "end_date": "2025-10-31",
+  "days_in_b_status": 22,
+  "performance_records": 713,
+  "status_changes": 60,
+  "key_dates": {
+    "join": "2025-10-02",
+    "to_c": "2025-10-05",
+    "to_b": "2025-10-09",
+    "test_end": "2025-10-31"
+  },
+  "b_to_a_window": {
+    "description": "B→A晋升窗口是B级后的6-9天",
+    "window_start": "2025-10-15",
+    "window_end": "2025-10-18",
+    "actual_days_in_b": 22,
+    "can_test_promotion": true
+  }
+}

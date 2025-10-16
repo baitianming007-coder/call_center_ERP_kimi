@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}业绩分析报表{% endblock %}
+{% block content %}
+<h1>📊 业绩分析报表</h1>
+
+<div class="card mb-24">
+    <div class="card-body">
+        <form method="GET">
+            <div style="display: flex; gap: 12px;">
+                <select name="period" class="form-select">
+                    <option value="day">日报</option>
+                    <option value="week" selected>周报</option>
+                    <option value="month">月报</option>
+                </select>
+                <input type="date" name="date" class="form-input" value="{{ date }}">
+                <button class="btn btn-primary">查询</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="grid grid-cols-2 mb-24">
+    <div class="card">
+        <div class="card-header"><h3>📈 业绩趋势</h3></div>
+        <div class="card-body">
+            <canvas id="trendChart" height="200"></canvas>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header"><h3>🏆 团队排名</h3></div>
+        <div class="card-body">
+            <canvas id="teamChart" height="200"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><h3>📋 详细数据</h3></div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr><th>日期</th><th>出单数</th><th>提成</th><th>人均出单</th></tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr>
+                    <td>{{ item.date }}</td>
+                    <td>{{ item.orders }}</td>
+                    <td>¥{{ item.commission }}</td>
+                    <td>{{ item.avg_orders }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+const trendData = {{ trend_data|tojson }};
+new Chart(document.getElementById('trendChart'), {
+    type: 'line',
+    data: {
+        labels: trendData.map(d => d.date),
+        datasets: [{
+            label: '出单数',
+            data: trendData.map(d => d.orders),
+            borderColor: '#2563EB',
+            tension: 0.3
+        }]
+    }
+});
+
+const teamData = {{ team_data|tojson }};
+new Chart(document.getElementById('teamChart'), {
+    type: 'bar',
+    data: {
+        labels: teamData.map(d => d.team),
+        datasets: [{
+            label: '出单数',
+            data: teamData.map(d => d.orders),
+            backgroundColor: '#10B981'
+        }]
+    }
+});
+</script>
+{% endblock %}
+
+

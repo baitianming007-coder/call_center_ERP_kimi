@@ -1,0 +1,434 @@
+{% extends "base.html" %}
+
+{% block title %}操作日志 - 呼叫中心管理系统{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+    .filter-bar {
+        background: var(--gray-100);
+        padding: var(--space-16);
+        border-radius: var(--radius-8);
+        margin-bottom: var(--space-16);
+    }
+    
+    .filter-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--space-12);
+        margin-bottom: var(--space-12);
+    }
+    
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+    }
+    
+    .filter-group label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--gray-700);
+    }
+    
+    .filter-actions {
+        display: flex;
+        gap: var(--space-8);
+        align-items: flex-end;
+    }
+    
+    .stats-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--space-12);
+        background: var(--gray-50);
+        border-radius: var(--radius-6);
+        margin-bottom: var(--space-16);
+    }
+    
+    .stats-info {
+        font-size: 0.875rem;
+        color: var(--gray-600);
+    }
+    
+    .table-container {
+        overflow-x: auto;
+    }
+    
+    .logs-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .logs-table th {
+        background: var(--gray-100);
+        padding: var(--space-12);
+        text-align: left;
+        font-weight: 600;
+        color: var(--gray-700);
+        border-bottom: 2px solid var(--gray-300);
+        white-space: nowrap;
+    }
+    
+    .logs-table td {
+        padding: var(--space-12);
+        border-bottom: 1px solid var(--gray-200);
+        vertical-align: top;
+    }
+    
+    .logs-table tr:hover {
+        background: var(--gray-50);
+    }
+    
+    .badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: var(--radius-4);
+        font-size: 0.75rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    
+    .badge-success { background: #d4edda; color: #155724; }
+    .badge-warning { background: #fff3cd; color: #856404; }
+    .badge-info { background: #d1ecf1; color: #0c5460; }
+    .badge-primary { background: #cce5ff; color: #004085; }
+    .badge-secondary { background: #e2e3e5; color: #383d41; }
+    
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: var(--space-8);
+        margin-top: var(--space-20);
+        padding: var(--space-16);
+    }
+    
+    .pagination-btn {
+        padding: 6px 12px;
+        border: 1px solid var(--gray-300);
+        background: white;
+        color: var(--gray-700);
+        border-radius: var(--radius-4);
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    
+    .pagination-btn:hover:not(:disabled) {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+    
+    .pagination-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .pagination-btn.active {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+    
+    .pagination-info {
+        color: var(--gray-600);
+        font-size: 0.875rem;
+    }
+    
+    .details-toggle {
+        color: var(--primary-color);
+        cursor: pointer;
+        text-decoration: underline;
+        font-size: 0.875rem;
+    }
+    
+    .details-toggle:hover {
+        color: var(--primary-dark);
+    }
+    
+    .details-content {
+        display: none;
+        margin-top: var(--space-8);
+        padding: var(--space-12);
+        background: var(--gray-50);
+        border-radius: var(--radius-4);
+        font-size: 0.875rem;
+        font-family: monospace;
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+    
+    .details-content.show {
+        display: block;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: var(--space-32);
+        color: var(--gray-500);
+    }
+    
+    .empty-state svg {
+        width: 64px;
+        height: 64px;
+        margin-bottom: var(--space-16);
+        opacity: 0.5;
+    }
+    
+    @media (max-width: 768px) {
+        .filter-row {
+            grid-template-columns: 1fr;
+        }
+        
+        .stats-bar {
+            flex-direction: column;
+            gap: var(--space-8);
+            align-items: flex-start;
+        }
+        
+        .logs-table {
+            font-size: 0.875rem;
+        }
+        
+        .logs-table th,
+        .logs-table td {
+            padding: var(--space-8);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📝 {% if is_admin %}系统操作日志{% else %}我的操作日志{% endif %}</h1>
+    <p style="color: var(--gray-600); margin-top: var(--space-8);">
+        {% if is_admin %}查看所有用户的操作记录{% else %}查看个人操作记录{% endif %}
+    </p>
+</div>
+
+<div class="card">
+    <!-- 筛选器 -->
+    <div class="filter-bar">
+        <form method="get" action="{{ url_for('manager.logs') }}" id="filterForm">
+            <div class="filter-row">
+                <!-- 操作类型 -->
+                <div class="filter-group">
+                    <label for="operation_type">操作类型</label>
+                    <select name="operation_type" id="operation_type" class="form-input">
+                        {% for opt in filters.operation_types %}
+                        <option value="{{ opt.value }}" {% if current_filters.operation_type == opt.value %}selected{% endif %}>
+                            {{ opt.label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- 操作人（仅管理员） -->
+                {% if is_admin and filters.operators %}
+                <div class="filter-group">
+                    <label for="operator_id">操作人</label>
+                    <select name="operator_id" id="operator_id" class="form-input">
+                        {% for opt in filters.operators %}
+                        <option value="{{ opt.value }}" {% if current_filters.operator_id == opt.value|string %}selected{% endif %}>
+                            {{ opt.label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+                
+                <!-- 开始日期 -->
+                <div class="filter-group">
+                    <label for="start_date">开始日期</label>
+                    <input type="date" name="start_date" id="start_date" class="form-input" 
+                           value="{{ current_filters.start_date }}">
+                </div>
+                
+                <!-- 结束日期 -->
+                <div class="filter-group">
+                    <label for="end_date">结束日期</label>
+                    <input type="date" name="end_date" id="end_date" class="form-input" 
+                           value="{{ current_filters.end_date }}">
+                </div>
+                
+                <!-- 搜索关键词 -->
+                <div class="filter-group">
+                    <label for="search">搜索员工</label>
+                    <input type="text" name="search" id="search" class="form-input" 
+                           placeholder="姓名或工号" value="{{ current_filters.search }}">
+                </div>
+                
+                <!-- 每页数量 -->
+                <div class="filter-group">
+                    <label for="per_page">每页显示</label>
+                    <select name="per_page" id="per_page" class="form-input">
+                        {% for num in filters.per_page_options %}
+                        <option value="{{ num }}" {% if current_filters.per_page == num %}selected{% endif %}>
+                            {{ num }} 条
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="filter-actions">
+                <button type="submit" class="btn btn-primary">🔍 筛选</button>
+                <a href="{{ url_for('manager.logs') }}" class="btn btn-secondary">重置</a>
+                <a href="{{ url_for('manager.logs_export', **current_filters) }}" class="btn btn-success">📥 导出CSV</a>
+            </div>
+        </form>
+    </div>
+    
+    <!-- 统计信息 -->
+    <div class="stats-bar">
+        <div class="stats-info">
+            {% if pagination.total_count > 0 %}
+            显示 <strong>{{ pagination.start_index }}</strong> - <strong>{{ pagination.end_index }}</strong> 
+            / 共 <strong>{{ pagination.total_count }}</strong> 条记录
+            {% else %}
+            暂无记录
+            {% endif %}
+        </div>
+        <div class="stats-info">
+            第 <strong>{{ pagination.page }}</strong> / <strong>{{ pagination.total_pages }}</strong> 页
+        </div>
+    </div>
+    
+    <!-- 日志表格 -->
+    <div class="table-container">
+        {% if logs %}
+        <table class="logs-table">
+            <thead>
+                <tr>
+                    <th style="width: 160px;">时间</th>
+                    <th style="width: 100px;">操作类型</th>
+                    <th>操作描述</th>
+                    {% if is_admin %}
+                    <th style="width: 100px;">操作人</th>
+                    {% endif %}
+                    <th style="width: 100px;">目标员工</th>
+                    <th style="width: 150px;">详情</th>
+                    <th style="width: 80px;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td style="font-size: 0.875rem; color: var(--gray-600);">
+                        {{ log.created_at_formatted }}
+                    </td>
+                    <td>
+                        <span class="badge badge-{{ log.operation_type_color }}">
+                            {{ log.operation_type_label }}
+                        </span>
+                    </td>
+                    <td>{{ log.description }}</td>
+                    {% if is_admin %}
+                    <td>{{ log.operator_name }}</td>
+                    {% endif %}
+                    <td>{{ log.target_employee_name or '-' }}</td>
+                    <td style="font-size: 0.85rem; color: var(--gray-600);">
+                        {{ (log.notes[:50] + '...') if log.notes and log.notes|length > 50 else (log.notes or '-') }}
+                    </td>
+                    <td>
+                        {% if log.changes or log.notes %}
+                        <span class="details-toggle" onclick="toggleDetails('log-{{ log.id }}')">
+                            查看
+                        </span>
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                </tr>
+                {% if log.changes or log.notes %}
+                <tr id="log-{{ log.id }}-details" style="display: none;">
+                    <td colspan="{% if is_admin %}7{% else %}6{% endif %}">
+                        <div class="details-content">
+                            {% if log.notes %}
+<strong>备注：</strong>
+{{ log.notes }}
+
+{% endif %}
+                            {% if log.changes %}
+<strong>变更详情：</strong>
+{{ log.changes | tojson(indent=2) }}
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                </path>
+            </svg>
+            <p>暂无操作记录</p>
+            <p style="font-size: 0.875rem;">尝试调整筛选条件</p>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- 分页 -->
+    {% if pagination.total_pages > 1 %}
+    <div class="pagination">
+        {% if pagination.has_prev %}
+        <a href="{{ url_for('manager.logs', page=pagination.prev_page, **current_filters) }}" 
+           class="pagination-btn">« 上一页</a>
+        {% else %}
+        <button class="pagination-btn" disabled>« 上一页</button>
+        {% endif %}
+        
+        <span class="pagination-info">
+            第 {{ pagination.page }} / {{ pagination.total_pages }} 页
+        </span>
+        
+        {% if pagination.has_next %}
+        <a href="{{ url_for('manager.logs', page=pagination.next_page, **current_filters) }}" 
+           class="pagination-btn">下一页 »</a>
+        {% else %}
+        <button class="pagination-btn" disabled>下一页 »</button>
+        {% endif %}
+        
+        <!-- 快速跳转 -->
+        <form method="get" action="{{ url_for('manager.logs') }}" style="display: inline-flex; gap: 4px; margin-left: 16px;">
+            {% for key, value in current_filters.items() %}
+                {% if value and key != 'page' %}
+                <input type="hidden" name="{{ key }}" value="{{ value }}">
+                {% endif %}
+            {% endfor %}
+            <input type="number" name="page" min="1" max="{{ pagination.total_pages }}" 
+                   value="{{ pagination.page }}" 
+                   style="width: 60px; padding: 4px 8px; border: 1px solid var(--gray-300); border-radius: 4px;">
+            <button type="submit" class="pagination-btn">跳转</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    function toggleDetails(logId) {
+        const detailsRow = document.getElementById(logId + '-details');
+        if (detailsRow.style.display === 'none') {
+            detailsRow.style.display = '';
+        } else {
+            detailsRow.style.display = 'none';
+        }
+    }
+    
+    // 自动提交表单当改变每页数量时
+    document.getElementById('per_page').addEventListener('change', function() {
+        document.getElementById('filterForm').submit();
+    });
+</script>
+{% endblock %}

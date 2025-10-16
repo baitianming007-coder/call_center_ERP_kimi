@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}团队工资查询 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>💰 团队工资查询</h1>
+    <p style="color: var(--gray-600); margin-top: var(--space-8);">查看本团队员工工资</p>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2>{{ team }}团队工资 - {{ year_month }}</h2>
+        <form method="GET" style="display: inline-block; margin-left: var(--space-16);">
+            <input type="month" name="year_month" value="{{ year_month }}" class="form-input" onchange="this.form.submit()">
+        </form>
+    </div>
+    <div class="card-body">
+        {% if payrolls %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>工号</th>
+                    <th>姓名</th>
+                    <th>状态</th>
+                    <th>底薪</th>
+                    <th>全勤奖</th>
+                    <th>绩效奖</th>
+                    <th>提成</th>
+                    <th>应发合计</th>
+                    <th>发放状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payroll in payrolls %}
+                <tr>
+                    <td>{{ payroll.employee_no }}</td>
+                    <td>{{ payroll.employee_name }}</td>
+                    <td><span class="badge">{{ payroll.status_at_time }}</span></td>
+                    <td>¥{{ "%.2f"|format(payroll.base_salary) }}</td>
+                    <td>¥{{ "%.2f"|format(payroll.attendance_bonus) }}</td>
+                    <td>¥{{ "%.2f"|format(payroll.performance_bonus) }}</td>
+                    <td>¥{{ "%.2f"|format(payroll.commission) }}</td>
+                    <td><strong>¥{{ "%.2f"|format(payroll.total_salary) }}</strong></td>
+                    <td>
+                        {% if payroll.status == 'pending' %}
+                        <span class="badge badge-warning">待确认</span>
+                        {% elif payroll.status == 'confirmed' %}
+                        <span class="badge badge-info">已确认</span>
+                        {% elif payroll.status == 'paid' %}
+                        <span class="badge badge-success">已发放</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state"><p>本月暂无工资记录</p></div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

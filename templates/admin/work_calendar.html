@@ -1,0 +1,584 @@
+{% extends "base.html" %}
+{% block title %}工作日配置 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<style>
+    .calendar-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: var(--space-20);
+        padding: var(--space-16);
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .toolbar-left {
+        display: flex;
+        align-items: center;
+        gap: var(--space-16);
+    }
+    
+    .mode-selector {
+        display: flex;
+        gap: var(--space-8);
+    }
+    
+    .mode-btn {
+        padding: 8px 16px;
+        border: 2px solid #ddd;
+        background: white;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 500;
+    }
+    
+    .mode-btn.active {
+        border-color: #667eea;
+        background: #667eea;
+        color: white;
+    }
+    
+    .mode-btn:hover:not(.active) {
+        border-color: #667eea;
+        background: #f0f4ff;
+    }
+    
+    .calendar-table {
+        width: 100%;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .calendar-table th {
+        background: #667eea;
+        color: white;
+        padding: var(--space-12);
+        font-weight: 600;
+        text-align: center;
+    }
+    
+    .calendar-cell {
+        padding: 0;
+        height: 100px;
+        border: 1px solid #e0e0e0;
+        position: relative;
+        vertical-align: top;
+    }
+    
+    .calendar-day {
+        width: 100%;
+        height: 100%;
+        padding: var(--space-8);
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border: 3px solid transparent;
+    }
+    
+    .calendar-day.workday {
+        background: #d4edda;
+    }
+    
+    .calendar-day.holiday {
+        background: #f8d7da;
+    }
+    
+    .calendar-day.selected {
+        border: 3px solid #ffc107;
+        box-shadow: inset 0 0 8px rgba(255,193,7,0.5);
+    }
+    
+    .calendar-day:hover {
+        transform: scale(1.02);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        z-index: 1;
+    }
+    
+    .day-number {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+    
+    .day-label {
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-weight: 500;
+    }
+    
+    .day-label.workday {
+        background: #28a745;
+        color: white;
+    }
+    
+    .day-label.holiday {
+        background: #dc3545;
+        color: white;
+    }
+    
+    .action-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 2px solid #667eea;
+        padding: var(--space-16);
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        display: none;
+        z-index: 1000;
+    }
+    
+    .action-bar.active {
+        display: block;
+    }
+    
+    .action-bar-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .action-info {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: var(--space-12);
+    }
+    
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .modal-overlay.active {
+        display: flex;
+    }
+    
+    .modal {
+        background: white;
+        border-radius: 12px;
+        padding: var(--space-24);
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    
+    .modal-header {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: var(--space-16);
+        color: #333;
+    }
+    
+    .modal-body {
+        margin-bottom: var(--space-20);
+        line-height: 1.6;
+    }
+    
+    .modal-checkbox {
+        display: flex;
+        align-items: center;
+        gap: var(--space-8);
+        padding: var(--space-12);
+        background: #f8f9fa;
+        border-radius: 6px;
+        margin-top: var(--space-12);
+    }
+    
+    .modal-checkbox input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+    
+    .modal-footer {
+        display: flex;
+        gap: var(--space-12);
+        justify-content: flex-end;
+    }
+    
+    .legend {
+        display: flex;
+        gap: var(--space-20);
+        margin-top: var(--space-16);
+        padding: var(--space-12);
+        background: #f8f9fa;
+        border-radius: 6px;
+    }
+    
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-8);
+    }
+    
+    .legend-box {
+        width: 30px;
+        height: 30px;
+        border-radius: 4px;
+        border: 2px solid #ddd;
+    }
+</style>
+
+<div class="page-header">
+    <h1>📅 工作日配置</h1>
+    <p style="color: var(--gray-600); margin-top: var(--space-8);">配置系统工作日和假期，支持批量选择</p>
+</div>
+
+<div class="calendar-container">
+    <!-- 工具栏 -->
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <label style="font-weight: 600;">选择月份：</label>
+            <input type="month" 
+                   id="monthSelector" 
+                   value="{{ '%04d-%02d'|format(year, month) }}" 
+                   class="form-input"
+                   style="width: 200px;">
+            
+            <div class="mode-selector">
+                <button class="mode-btn active" data-mode="workday" onclick="setMode('workday')">
+                    🟢 设为工作日
+                </button>
+                <button class="mode-btn" data-mode="holiday" onclick="setMode('holiday')">
+                    🔴 设为假期
+                </button>
+            </div>
+        </div>
+        
+        <button class="btn btn-secondary" onclick="clearSelection()">
+            清除选择
+        </button>
+    </div>
+    
+    <!-- 图例 -->
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-box" style="background: #d4edda;"></div>
+            <span>工作日</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-box" style="background: #f8d7da;"></div>
+            <span>假期</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-box" style="background: white;"></div>
+            <span>未配置</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-box" style="border: 3px solid #ffc107;"></div>
+            <span>已选择</span>
+        </div>
+    </div>
+    
+    <!-- 日历表格 -->
+    <div style="margin-top: var(--space-20);">
+        <table class="calendar-table">
+            <thead>
+                <tr>
+                    <th>周一</th>
+                    <th>周二</th>
+                    <th>周三</th>
+                    <th>周四</th>
+                    <th>周五</th>
+                    <th>周六</th>
+                    <th>周日</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for week in calendar_data %}
+                <tr>
+                    {% for day in week %}
+                    <td class="calendar-cell">
+                        {% if day != 0 %}
+                            {% set date_str = "%04d-%02d-%02d"|format(year, month, day) %}
+                            {% set config = config_dict.get(date_str) %}
+                            {% set is_workday = config.is_workday if config else None %}
+                            
+                            <div class="calendar-day {% if is_workday == 1 %}workday{% elif is_workday == 0 %}holiday{% endif %}"
+                                 data-date="{{ date_str }}"
+                                 data-current-state="{% if is_workday == 1 %}workday{% elif is_workday == 0 %}holiday{% else %}unset{% endif %}"
+                                 onclick="toggleDate('{{ date_str }}', this)">
+                                <div class="day-number">{{ day }}</div>
+                                {% if is_workday == 1 %}
+                                    <span class="day-label workday">工作日</span>
+                                {% elif is_workday == 0 %}
+                                    <span class="day-label holiday">假期</span>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 底部操作栏 -->
+<div id="actionBar" class="action-bar">
+    <div class="action-bar-content">
+        <div class="action-info">
+            已选择 <strong id="selectedCount">0</strong> 天
+        </div>
+        <div class="action-buttons">
+            <button class="btn btn-secondary" onclick="cancelSelection()">取消</button>
+            <button class="btn btn-primary" onclick="showConfirmModal()">保存配置</button>
+        </div>
+    </div>
+</div>
+
+<!-- 确认对话框 -->
+<div id="confirmModal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">确认配置</div>
+        <div class="modal-body">
+            <p id="confirmMessage"></p>
+            <div class="modal-checkbox">
+                <input type="checkbox" id="recalculateCheckbox" checked>
+                <label for="recalculateCheckbox" style="cursor: pointer; user-select: none;">
+                    重新计算该月份所有员工的业绩数据（推荐）
+                </label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="hideConfirmModal()">取消</button>
+            <button class="btn btn-primary" onclick="submitConfiguration()">确认</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// 全局变量
+let selectedDates = new Set();
+let currentMode = 'workday'; // 'workday' or 'holiday'
+let currentYear = {{ year }};
+let currentMonth = {{ month }};
+
+// 设置操作模式
+function setMode(mode) {
+    currentMode = mode;
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        if (btn.dataset.mode === mode) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+}
+
+// 切换日期选择
+function toggleDate(dateStr, element) {
+    if (selectedDates.has(dateStr)) {
+        selectedDates.delete(dateStr);
+        element.classList.remove('selected');
+    } else {
+        selectedDates.add(dateStr);
+        element.classList.add('selected');
+    }
+    updateActionBar();
+}
+
+// 更新操作栏
+function updateActionBar() {
+    const actionBar = document.getElementById('actionBar');
+    const selectedCount = document.getElementById('selectedCount');
+    
+    selectedCount.textContent = selectedDates.size;
+    
+    if (selectedDates.size > 0) {
+        actionBar.classList.add('active');
+    } else {
+        actionBar.classList.remove('active');
+    }
+}
+
+// 清除选择
+function clearSelection() {
+    selectedDates.clear();
+    document.querySelectorAll('.calendar-day.selected').forEach(el => {
+        el.classList.remove('selected');
+    });
+    updateActionBar();
+}
+
+// 取消选择
+function cancelSelection() {
+    clearSelection();
+}
+
+// 显示确认对话框
+function showConfirmModal() {
+    if (selectedDates.size === 0) {
+        alert('请先选择要配置的日期');
+        return;
+    }
+    
+    const modeText = currentMode === 'workday' ? '工作日' : '假期';
+    const message = `确认将选中的 ${selectedDates.size} 天设置为${modeText}吗？`;
+    
+    document.getElementById('confirmMessage').textContent = message;
+    document.getElementById('confirmModal').classList.add('active');
+}
+
+// 隐藏确认对话框
+function hideConfirmModal() {
+    document.getElementById('confirmModal').classList.remove('active');
+}
+
+// 提交配置
+async function submitConfiguration() {
+    const recalculate = document.getElementById('recalculateCheckbox').checked;
+    
+    const data = {
+        dates: Array.from(selectedDates),
+        is_workday: currentMode === 'workday',
+        recalculate_performance: recalculate,
+        year_month: `${currentYear}-${String(currentMonth).padStart(2, '0')}`
+    };
+    
+    try {
+        const response = await fetch('{{ url_for("admin_ext.batch_save_workdays") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // 更新界面
+            selectedDates.forEach(dateStr => {
+                const element = document.querySelector(`[data-date="${dateStr}"]`);
+                if (element) {
+                    // 移除所有状态类
+                    element.classList.remove('workday', 'holiday', 'selected');
+                    
+                    // 添加新状态
+                    if (currentMode === 'workday') {
+                        element.classList.add('workday');
+                    } else {
+                        element.classList.add('holiday');
+                    }
+                    
+                    // 更新标签
+                    const labelHtml = currentMode === 'workday' 
+                        ? '<span class="day-label workday">工作日</span>'
+                        : '<span class="day-label holiday">假期</span>';
+                    
+                    const dayNumber = element.querySelector('.day-number').outerHTML;
+                    element.innerHTML = dayNumber + labelHtml;
+                }
+            });
+            
+            // 显示成功消息
+            let message = `成功配置 ${result.affected_dates} 天`;
+            if (result.affected_employees > 0) {
+                message += `，已重新计算 ${result.affected_employees} 名员工的业绩`;
+            }
+            
+            showSuccessToast(message);
+            
+            // 清除选择
+            clearSelection();
+            hideConfirmModal();
+        } else {
+            alert('配置失败：' + (result.message || '未知错误'));
+        }
+    } catch (error) {
+        alert('网络错误：' + error.message);
+    }
+}
+
+// 显示成功提示
+function showSuccessToast(message) {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #28a745;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 3000;
+        animation: slideIn 0.3s ease-out;
+    `;
+    toast.textContent = '✓ ' + message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// 月份选择器变化
+document.getElementById('monthSelector').addEventListener('change', function() {
+    const yearMonth = this.value;
+    window.location.href = '{{ url_for("admin_ext.work_calendar") }}?year_month=' + yearMonth;
+});
+
+// 添加CSS动画
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
+
+{% endblock %}

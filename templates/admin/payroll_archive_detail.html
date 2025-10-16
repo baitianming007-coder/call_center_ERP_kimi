@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}归档详情 - 呼叫中心管理系统{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>📦 {{ archive.archive_year }}年度归档详情</h1>
+    <a href="{{ url_for('admin_ext.payroll_archive') }}" class="btn btn-secondary">返回列表</a>
+</div>
+<div class="card" style="margin-bottom: var(--space-24);">
+    <div class="card-header"><h2>年度汇总</h2></div>
+    <div class="card-body">
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-16);">
+            <div>
+                <div style="color: var(--gray-600);">总人数</div>
+                <div style="font-size: 24px; font-weight: bold;">{{ archive.total_employees }}人</div>
+            </div>
+            <div>
+                <div style="color: var(--gray-600);">总记录数</div>
+                <div style="font-size: 24px; font-weight: bold;">{{ archive.total_records }}条</div>
+            </div>
+            <div>
+                <div style="color: var(--gray-600);">总金额</div>
+                <div style="font-size: 24px; font-weight: bold; color: var(--color-success);">¥{{ "%.2f"|format(archive.total_amount) }}</div>
+            </div>
+            <div>
+                <div style="color: var(--gray-600);">归档时间</div>
+                <div style="font-size: 14px;">{{ archive.archived_at }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header"><h2>月度明细</h2></div>
+    <div class="card-body">
+        {% if monthly_summary %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>月份</th><th>人数</th><th>记录数</th><th>金额</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for month in monthly_summary %}
+                <tr>
+                    <td>{{ month.year_month }}</td>
+                    <td>{{ month.total_employees }}人</td>
+                    <td>{{ month.total_records }}条</td>
+                    <td>¥{{ "%.2f"|format(month.total_amount) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state"><p>无月度数据</p></div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

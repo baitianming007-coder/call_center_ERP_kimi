@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}薪资分析{% endblock %}
+{% block content %}
+<h1>💰 薪资分析报表</h1>
+
+<div class="card mb-24">
+    <div class="card-body">
+        <form method="GET">
+            <input type="month" name="month" class="form-input" value="{{ month }}">
+            <button class="btn btn-primary">查询</button>
+        </form>
+    </div>
+</div>
+
+<div class="grid grid-cols-3 mb-24">
+    <div class="stat-card">
+        <div class="stat-label">总薪资</div>
+        <div class="stat-value">¥{{ total_salary }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">人均薪资</div>
+        <div class="stat-value">¥{{ avg_salary }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">发放人数</div>
+        <div class="stat-value">{{ count }}</div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><h3>📊 薪资构成</h3></div>
+    <div class="card-body">
+        <canvas id="salaryChart" height="150"></canvas>
+    </div>
+</div>
+
+<script>
+new Chart(document.getElementById('salaryChart'), {
+    type: 'pie',
+    data: {
+        labels: ['底薪', '提成', '奖金'],
+        datasets: [{
+            data: [{{ base_total }}, {{ commission_total }}, {{ bonus_total }}],
+            backgroundColor: ['#3B82F6', '#10B981', '#F59E0B']
+        }]
+    }
+});
+</script>
+{% endblock %}
+

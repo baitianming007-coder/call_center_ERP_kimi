@@ -1,0 +1,348 @@
+{% extends "base.html" %}
+
+{% block title %}员工管理 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div class="flex-between mb-24">
+    <div>
+        <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900); margin-bottom: var(--space-8);">
+            👥 员工管理
+        </h1>
+        <p style="color: var(--gray-600);">共 {{ employees|length }} 名员工</p>
+    </div>
+    <div style="display: flex; gap: var(--space-12);">
+        <a href="{{ url_for('export.export_employees_excel') }}" class="btn btn-success">📥 导出Excel</a>
+        <a href="{{ url_for('admin.employee_add') }}" class="btn btn-primary">+ 添加员工</a>
+    </div>
+</div>
+
+<!-- 筛选栏 -->
+<div class="card mb-24">
+    <div class="card-body">
+        <form method="GET" action="{{ url_for('admin.employees') }}" id="filterForm">
+            <!-- 基础筛选 -->
+            <div style="display: flex; gap: var(--space-16); align-items: flex-end; margin-bottom: var(--space-16);">
+                <div class="form-group" style="flex: 1; margin: 0;">
+                    <label class="form-label">搜索</label>
+                    <input type="text" name="search" class="form-input" placeholder="姓名或工号" value="{{ search_keyword }}">
+                </div>
+                
+                {% if user.role == 'admin' %}
+                <div class="form-group" style="flex: 1; margin: 0;">
+                    <label class="form-label">团队</label>
+                    <select name="team" class="form-select">
+                        <option value="">全部团队</option>
+                        {% for t in teams %}
+                        <option value="{{ t.team }}" {% if current_team == t.team %}selected{% endif %}>{{ t.team }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+                
+                <div class="form-group" style="flex: 1; margin: 0;">
+                    <label class="form-label">状态</label>
+                    <select name="status" class="form-select">
+                        <option value="">全部状态</option>
+                        <option value="A" {% if current_status == 'A' %}selected{% endif %}>A级</option>
+                        <option value="B" {% if current_status == 'B' %}selected{% endif %}>B级</option>
+                        <option value="C" {% if current_status == 'C' %}selected{% endif %}>C级</option>
+                        <option value="trainee" {% if current_status == 'trainee' %}selected{% endif %}>培训期</option>
+                        <option value="eliminated" {% if current_status == 'eliminated' %}selected{% endif %}>已淘汰</option>
+                    </select>
+                </div>
+                
+                <button type="button" onclick="toggleAdvancedFilters()" class="btn btn-secondary">
+                    <span id="advancedToggleIcon">▼</span> 高级筛选
+                </button>
+                <button type="submit" class="btn btn-primary">🔍 查询</button>
+                <a href="{{ url_for('admin.employees') }}" class="btn btn-secondary">🔄 重置</a>
+            </div>
+            
+            <!-- 高级筛选（可折叠） -->
+            <div id="advancedFilters" style="display: none; padding-top: var(--space-16); border-top: 1px solid var(--gray-200);">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-16);">
+                    <div class="form-group" style="margin: 0;">
+                        <label class="form-label">入职日期范围</label>
+                        <div style="display: flex; gap: var(--space-8); align-items: center;">
+                            <input type="date" name="join_date_from" class="form-input" value="{{ request.args.get('join_date_from', '') }}">
+                            <span style="color: var(--gray-500);">至</span>
+                            <input type="date" name="join_date_to" class="form-input" value="{{ request.args.get('join_date_to', '') }}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin: 0;">
+                        <label class="form-label">本月出单范围</label>
+                        <div style="display: flex; gap: var(--space-8); align-items: center;">
+                            <input type="number" name="orders_from" class="form-input" placeholder="最少" min="0" value="{{ request.args.get('orders_from', '') }}">
+                            <span style="color: var(--gray-500);">至</span>
+                            <input type="number" name="orders_to" class="form-input" placeholder="最多" min="0" value="{{ request.args.get('orders_to', '') }}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin: 0;">
+                        <label class="form-label">在职天数范围</label>
+                        <div style="display: flex; gap: var(--space-8); align-items: center;">
+                            <input type="number" name="work_days_from" class="form-input" placeholder="最少" min="0" value="{{ request.args.get('work_days_from', '') }}">
+                            <span style="color: var(--gray-500);">至</span>
+                            <input type="number" name="work_days_to" class="form-input" placeholder="最多" min="0" value="{{ request.args.get('work_days_to', '') }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 批量操作栏 -->
+<div id="batchActionsBar" style="display: none; background: var(--color-info); color: white; padding: var(--space-16); border-radius: var(--radius-md); margin-bottom: var(--space-16);">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <span style="font-weight: 600;">已选择 <span id="selectedCount">0</span> 名员工</span>
+        </div>
+        <div style="display: flex; gap: var(--space-12);">
+            <button onclick="batchExport()" class="btn btn-light">📥 批量导出</button>
+            {% if user.role == 'admin' %}
+            <button onclick="batchChangeTeam()" class="btn btn-light">👥 批量修改团队</button>
+            {% endif %}
+            <button onclick="clearSelection()" class="btn btn-secondary">✕ 取消选择</button>
+        </div>
+    </div>
+</div>
+
+<!-- 员工列表 -->
+<div class="card">
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 50px;">
+                        <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                    </th>
+                    <th>工号</th>
+                    <th>姓名</th>
+                    <th>团队</th>
+                    <th>状态</th>
+                    <th>手机号</th>
+                    <th>入职日期</th>
+                    <th style="text-align: right;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if employees %}
+                    {% for emp in employees %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="emp-checkbox" value="{{ emp.id }}" 
+                                   data-name="{{ emp.name }}" data-no="{{ emp.employee_no }}"
+                                   onchange="updateSelection()">
+                        </td>
+                        <td><strong>{{ emp.employee_no }}</strong></td>
+                        <td>{{ emp.name }}</td>
+                        <td>{{ emp.team }}</td>
+                        <td>
+                            <span class="badge badge-{{ emp.status }}">{{ emp.status | status_label }}</span>
+                        </td>
+                        <td>{{ emp.phone or '-' }}</td>
+                        <td>{{ emp.join_date }}</td>
+                        <td class="actions">
+                            <a href="{{ url_for('admin.employee_edit', emp_id=emp.id) }}" class="btn btn-sm btn-secondary">编辑</a>
+                            <button class="btn btn-sm btn-danger" onclick="deleteEmployee({{ emp.id }}, '{{ emp.name }}')">删除</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: var(--space-48); color: var(--gray-500);">
+                            暂无员工数据
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- 分页控件 -->
+    {% if pagination and pagination.total_pages > 1 %}
+    <div style="margin-top: var(--space-24); display: flex; justify-content: space-between; align-items: center;">
+        <div style="color: var(--gray-600); font-size: 14px;">
+            显示 {{ (pagination.page - 1) * pagination.per_page + 1 }} - {{ [pagination.page * pagination.per_page, pagination.total] | min }} 
+            共 {{ pagination.total }} 条
+        </div>
+        
+        <div class="pagination">
+            {% if pagination.has_prev %}
+            <a href="?page={{ pagination.prev_page }}{% if current_team %}&team={{ current_team }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}{% if search_keyword %}&search={{ search_keyword }}{% endif %}" 
+               class="pagination-btn">« 上一页</a>
+            {% else %}
+            <span class="pagination-btn pagination-btn-disabled">« 上一页</span>
+            {% endif %}
+            
+            {% for p in pagination.pages %}
+                {% if p == pagination.page %}
+                <span class="pagination-btn pagination-btn-active">{{ p }}</span>
+                {% else %}
+                <a href="?page={{ p }}{% if current_team %}&team={{ current_team }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}{% if search_keyword %}&search={{ search_keyword }}{% endif %}" 
+                   class="pagination-btn">{{ p }}</a>
+                {% endif %}
+            {% endfor %}
+            
+            {% if pagination.has_next %}
+            <a href="?page={{ pagination.next_page }}{% if current_team %}&team={{ current_team }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}{% if search_keyword %}&search={{ search_keyword }}{% endif %}" 
+               class="pagination-btn">下一页 »</a>
+            {% else %}
+            <span class="pagination-btn pagination-btn-disabled">下一页 »</span>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 切换高级筛选显示/隐藏
+    function toggleAdvancedFilters() {
+        const advFilters = document.getElementById('advancedFilters');
+        const icon = document.getElementById('advancedToggleIcon');
+        
+        if (advFilters.style.display === 'none' || advFilters.style.display === '') {
+            advFilters.style.display = 'block';
+            icon.textContent = '▲';
+        } else {
+            advFilters.style.display = 'none';
+            icon.textContent = '▼';
+        }
+    }
+    
+    // 页面加载时检查是否有高级筛选参数，如果有则自动展开
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const hasAdvancedFilters = 
+            urlParams.get('join_date_from') || 
+            urlParams.get('join_date_to') ||
+            urlParams.get('orders_from') ||
+            urlParams.get('orders_to') ||
+            urlParams.get('work_days_from') ||
+            urlParams.get('work_days_to');
+        
+        if (hasAdvancedFilters) {
+            toggleAdvancedFilters();
+        }
+    });
+
+    // ========== 批量操作功能 ==========
+    
+    // 全选/取消全选
+    function toggleSelectAll() {
+        const selectAll = document.getElementById('selectAll');
+        const checkboxes = document.querySelectorAll('.emp-checkbox');
+        checkboxes.forEach(cb => cb.checked = selectAll.checked);
+        updateSelection();
+    }
+    
+    // 更新选择状态
+    function updateSelection() {
+        const checkboxes = document.querySelectorAll('.emp-checkbox');
+        const checked = document.querySelectorAll('.emp-checkbox:checked');
+        const batchBar = document.getElementById('batchActionsBar');
+        const countSpan = document.getElementById('selectedCount');
+        const selectAll = document.getElementById('selectAll');
+        
+        // 更新全选复选框状态
+        selectAll.checked = checked.length === checkboxes.length && checkboxes.length > 0;
+        selectAll.indeterminate = checked.length > 0 && checked.length < checkboxes.length;
+        
+        // 显示/隐藏批量操作栏
+        if (checked.length > 0) {
+            batchBar.style.display = 'block';
+            countSpan.textContent = checked.length;
+        } else {
+            batchBar.style.display = 'none';
+        }
+    }
+    
+    // 清除选择
+    function clearSelection() {
+        document.querySelectorAll('.emp-checkbox').forEach(cb => cb.checked = false);
+        document.getElementById('selectAll').checked = false;
+        updateSelection();
+    }
+    
+    // 获取选中的员工IDs
+    function getSelectedIds() {
+        const checked = document.querySelectorAll('.emp-checkbox:checked');
+        return Array.from(checked).map(cb => cb.value);
+    }
+    
+    // 批量导出
+    function batchExport() {
+        const ids = getSelectedIds();
+        if (ids.length === 0) {
+            showToast('请先选择员工', 'warning');
+            return;
+        }
+        
+        // 构建导出URL
+        const url = `/export/employees/excel?ids=${ids.join(',')}`;
+        window.open(url, '_blank');
+        showToast(`正在导出${ids.length}名员工数据...`, 'info');
+    }
+    
+    // 批量修改团队
+    function batchChangeTeam() {
+        const ids = getSelectedIds();
+        if (ids.length === 0) {
+            showToast('请先选择员工', 'warning');
+            return;
+        }
+        
+        const team = prompt(`请输入新团队名称（将修改${ids.length}名员工）：`);
+        if (!team) return;
+        
+        if (!confirmAction(`确定将${ids.length}名员工的团队修改为"${team}"吗？`)) {
+            return;
+        }
+        
+        fetch('/admin/batch_change_team', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ids: ids, team: team})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(data.message, 'danger');
+            }
+        })
+        .catch(error => {
+            showToast('操作失败：' + error, 'danger');
+        });
+    }
+
+    function deleteEmployee(id, name) {
+        if (!confirmAction(`确定要删除员工"${name}"吗？删除后该员工将被标记为离职。`)) {
+            return;
+        }
+        
+        fetch(`/admin/employee/${id}/delete`, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(data.message, 'danger');
+            }
+        })
+        .catch(error => {
+            showToast('操作失败：' + error, 'danger');
+        });
+    }
+</script>
+{% endblock %}
+

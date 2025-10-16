@@ -1,0 +1,14 @@
+============================================================
+呼叫中心职场管理系统
+============================================================
+访问地址: http://127.0.0.1:8080
+默认账号:
+  管理员: admin / 123456
+  经理: manager / 123456
+  财务: finance / 123456
+  员工: a001 / 123456
+============================================================
+ * Serving Flask app 'app'
+ * Debug mode: on
+Address already in use
+Port 8080 is in use by another program. Either identify and stop that program, or start the server with a different port.

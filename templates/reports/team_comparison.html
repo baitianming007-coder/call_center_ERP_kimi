@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}团队对比报表 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div class="mb-24">
+    <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900); margin-bottom: var(--space-8);">
+        📊 团队对比报表
+    </h1>
+    <p style="color: var(--gray-600);">{{ year_month }} · 跨团队数据对比分析</p>
+</div>
+
+<!-- 对比表格 -->
+<div class="card">
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>团队</th>
+                    <th>总人数</th>
+                    <th>A级</th>
+                    <th>B级</th>
+                    <th>C级</th>
+                    <th>本月出单</th>
+                    <th>平均出单</th>
+                    <th>总提成</th>
+                    <th>收入</th>
+                    <th>成本</th>
+                    <th style="text-align: right;">利润率</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for team in team_data %}
+                <tr>
+                    <td><strong>{{ team.team }}</strong></td>
+                    <td>{{ team.total_staff }}</td>
+                    <td><span class="badge badge-a">{{ team.a_count }}</span></td>
+                    <td><span class="badge badge-b">{{ team.b_count }}</span></td>
+                    <td><span class="badge badge-c">{{ team.c_count }}</span></td>
+                    <td><strong style="color: var(--color-primary);">{{ team.total_orders }}</strong></td>
+                    <td>{{ team.avg_orders }}</td>
+                    <td>{{ team.total_commission | format_currency }}</td>
+                    <td style="color: var(--color-success); font-weight: 600;">{{ team.revenue | format_currency }}</td>
+                    <td style="color: var(--color-warning); font-weight: 600;">{{ team.cost | format_currency }}</td>
+                    <td style="text-align: right; color: {% if team.profit_margin >= 0 %}var(--color-success){% else %}var(--color-danger){% endif %}; font-weight: 700;">
+                        {{ team.profit_margin }}%
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+
+

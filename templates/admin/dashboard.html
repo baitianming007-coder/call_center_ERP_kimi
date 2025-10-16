@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}主看板 - 呼叫中心管理系统{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: var(--space-32);">
+    <h1 style="font-size: 28px; font-weight: 700; color: var(--gray-900); margin-bottom: var(--space-8);">
+        📊 主看板
+    </h1>
+    <p style="color: var(--gray-600);">
+        {% if team %}
+        数据范围：{{ team }}
+        {% else %}
+        数据范围：全部团队
+        {% endif %}
+    </p>
+</div>
+
+<!-- 核心指标卡片 -->
+<div class="grid grid-cols-4 mb-32">
+    <div class="stat-card">
+        <div class="stat-label">在职人数</div>
+        <div class="stat-value" style="color: var(--color-primary);">{{ total_staff }}</div>
+        <div style="margin-top: var(--space-8); font-size: 13px; color: var(--gray-600);">总计</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-label">今日出单</div>
+        <div class="stat-value" style="color: var(--color-success);">{{ today_orders }}</div>
+        <div style="margin-top: var(--space-8); font-size: 13px; color: var(--gray-600);">
+            {{ today_working }} 人在岗
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-label">本月出单</div>
+        <div class="stat-value" style="color: var(--color-warning);">{{ month_orders }}</div>
+        <div style="margin-top: var(--space-8); font-size: 13px; color: var(--gray-600);">
+            提成 {{ month_commission | format_currency }}
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-label">本月利润</div>
+        <div class="stat-value" style="color: {% if month_profit >= 0 %}var(--color-success){% else %}var(--color-danger){% endif %}; font-size: 24px;">
+            {{ month_profit | format_currency }}
+        </div>
+        <div style="margin-top: var(--space-8); font-size: 13px; color: var(--gray-600);">
+            收入 {{ month_revenue | format_currency }}
+        </div>
+    </div>
+</div>
+
+<!-- 第二行：趋势和分布 -->
+<div class="grid grid-cols-2 mb-32">
+    <!-- 最近7天趋势 -->
+    <div class="card">
+        <div class="card-header">
+            <h3>📈 最近7天出单趋势</h3>
+        </div>
+        <div class="card-body">
+            <canvas id="trendChart" height="120"></canvas>
+        </div>
+    </div>
+    
+    <!-- 人员状态分布 -->
+    <div class="card">
+        <div class="card-header">
+            <h3>👥 人员状态分布</h3>
+        </div>
+        <div class="card-body">
+            <canvas id="statusChart" height="120"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- 快速入口 -->
+<div class="card">
+    <div class="card-header">
+        <h3>🔗 快速入口</h3>
+    </div>
+    <div class="card-body">
+        <div class="grid grid-cols-4" style="gap: var(--space-16);">
+            <a href="{{ url_for('admin.employees') }}" class="btn btn-secondary" style="height: 60px; font-size: 15px;">
+                <span style="font-size: 20px; margin-right: 8px;">👥</span> 员工管理
+            </a>
+            <a href="{{ url_for('admin.performance_add') }}" class="btn btn-secondary" style="height: 60px; font-size: 15px;">
+                <span style="font-size: 20px; margin-right: 8px;">✏️</span> 录入业绩
+            </a>
+            <a href="{{ url_for('admin.status_check') }}" class="btn btn-secondary" style="height: 60px; font-size: 15px;">
+                <span style="font-size: 20px; margin-right: 8px;">🔄</span> 状态检查
+            </a>
+            <a href="{{ url_for('admin.salary') }}" class="btn btn-secondary" style="height: 60px; font-size: 15px;">
+                <span style="font-size: 20px; margin-right: 8px;">💰</span> 薪资统计
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 趋势图
+    const trendCtx = document.getElementById('trendChart').getContext('2d');
+    const trendData = {{ trend_data | tojson }};
+    
+    new Chart(trendCtx, {
+        type: 'line',
+        data: {
+            labels: trendData.map(d => d.date),
+            datasets: [{
+                label: '出单数',
+                data: trendData.map(d => d.orders),
+                borderColor: 'rgba(37, 99, 235, 1)',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.3,
+                pointRadius: 3,
+                pointHoverRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(229, 231, 235, 1)'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+    
+    // 状态分布饼图
+    const statusCtx = document.getElementById('statusChart').getContext('2d');
+    const statusData = {{ status_distribution | tojson }};
+    
+    new Chart(statusCtx, {
+        type: 'doughnut',
+        data: {
+            labels: statusData.map(d => d.label),
+            datasets: [{
+                data: statusData.map(d => d.count),
+                backgroundColor: [
+                    'rgba(16, 185, 129, 0.8)',   // A
+                    'rgba(59, 130, 246, 0.8)',   // B
+                    'rgba(245, 158, 11, 0.8)',   // C
+                    'rgba(156, 163, 175, 0.8)',  // trainee
+                    'rgba(239, 68, 68, 0.8)'     // eliminated
+                ],
+                borderWidth: 2,
+                borderColor: 'white'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'right'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
+
+
+

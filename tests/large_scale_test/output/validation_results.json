@@ -1,0 +1,24 @@
+{
+  "promotion_validation": {
+    "total_applications": 0,
+    "validated": true,
+    "issues": []
+  },
+  "challenge_validation": {
+    "total_challenges": 0,
+    "validated": true,
+    "issues": []
+  },
+  "salary_validation": {
+    "sample_size": 100,
+    "validated": 100,
+    "errors": 0,
+    "pass_rate": 100.0
+  },
+  "consistency_validation": {
+    "total_employees": 500,
+    "total_performance": 37543,
+    "orphan_performance": 0,
+    "consistent": true
+  }
+}
